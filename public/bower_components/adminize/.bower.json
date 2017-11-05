@@ -1,0 +1,55 @@
+{
+  "name": "adminize",
+  "description": "HTML/CSS framework for admin",
+  "version": "1.1.0",
+  "main": [
+    "css/adminize.css",
+    "js/adminize.js"
+  ],
+  "moduleType": "globals",
+  "license": "MIT",
+  "ignore": [
+    ".bowerrc",
+    ".gitignore",
+    "gulpfile.js",
+    "src",
+    "*/.*",
+    ".*",
+    "*.json",
+    "*.md",
+    "test",
+    "gulp",
+    "Gemfile",
+    "Gemfile.lock"
+  ],
+  "keywords": [
+    "adminize",
+    "html",
+    "css",
+    "admin",
+    "template"
+  ],
+  "authors": [
+    "Ryuichi Komeda <komeda@hivelocity.co.jp>"
+  ],
+  "homepage": "https://github.com/hivelocityinc/adminize",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:hivelocityinc/adminize.git"
+  },
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "fontawesome": "^4.6.3",
+    "remodal": "^1.1.0",
+    "flatpickr": "flatpickr-calendar#^2.0.5"
+  },
+  "_release": "1.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.1.0",
+    "commit": "cdb97ddd5b706488c81a5ed44520f66a6cab50aa"
+  },
+  "_source": "https://github.com/hivelocityinc/adminize.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/hivelocityinc/adminize.git"
+}
