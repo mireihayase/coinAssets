@@ -15,7 +15,7 @@ class Controller extends BaseController{
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
 		if(!empty($header)){
-			curl_setopt($curl, CURLOPT_HTTPHEADER,$header) ;
+			curl_setopt($curl, CURLOPT_HTTPHEADER,$header);
 		}
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
 		$result =  curl_exec($curl);

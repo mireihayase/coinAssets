@@ -26,40 +26,50 @@ Route::get('/dashboard', 'indexController@dashboard');
 Route::get('/detail', 'indexController@detail');
 
 
+Route::group(['middleware' => ['auth']], function () {
 
-Route::group(['namespace' => 'bitflyer'], function () {
-	Route::group(['prefix' => 'bitflyer'], function () {
-		Route::get('/board', 'ApiController@getBoard');
-		Route::get('/getbalance', 'ApiController@getBalance');
-		Route::get('/gethistory', 'ApiController@getHistory');
-		Route::get('/getcoinouts', 'ApiController@getCoinOuts');
+	Route::group(['namespace' => 'bitflyer'], function () {
+		Route::group(['prefix' => 'bitflyer'], function () {
+			Route::get('/board', 'ApiController@getBoard');
+			Route::get('/getbalance', 'ApiController@getBalance');
+			Route::get('/gethistory', 'ApiController@getHistory');
+			Route::get('/getcoinouts', 'ApiController@getCoinOuts');
 
-		//表示
-		Route::get('/asset', 'ApiController@dispAsset');
-		Route::get('/history', 'ApiController@dispHistory');
+
+			//表示
+			Route::get('/asset', 'ApiController@dispAsset');
+			Route::get('/history', 'ApiController@dispHistory');
+			Route::get('/api', 'ApiController@createApi');
+			Route::post('/api', 'ApiController@registApi');
+		});
 	});
-});
 
-Route::group(['namespace' => 'coincheck'], function () {
-	Route::group(['prefix' => 'coincheck'], function () {
-		Route::get('/board', 'ApiController@getBoard');
-		Route::get('/getbalance', 'ApiController@getBalance');
-		Route::get('/transactions', 'ApiController@getTransaction');
+	Route::group(['namespace' => 'coincheck'], function () {
+		Route::group(['prefix' => 'coincheck'], function () {
+			Route::get('/board', 'ApiController@getBoard');
+			Route::get('/getbalance', 'ApiController@getBalance');
+			Route::get('/transactions', 'ApiController@getTransaction');
 
-		//表示
-		Route::get('/asset', 'ApiController@dispAsset');
-		Route::get('/history', 'ApiController@dispHistory');
+			//表示
+			Route::get('/asset', 'ApiController@dispAsset');
+			Route::get('/history', 'ApiController@dispHistory');
+			Route::get('/api', 'ApiController@createApi');
+			Route::post('/api', 'ApiController@registApi');
+		});
 	});
-});
 
-Route::group(['namespace' => 'zaif'], function () {
-	Route::group(['prefix' => 'zaif'], function () {
-		Route::get('/get_info', 'ApiController@getInfo');
-		Route::get('/trade_history', 'ApiController@tradeHistory');
+	Route::group(['namespace' => 'zaif'], function () {
+		Route::group(['prefix' => 'zaif'], function () {
+			Route::get('/get_info', 'ApiController@getInfo');
+			Route::get('/trade_history', 'ApiController@tradeHistory');
 
-		//表示
-		Route::get('/asset', 'ApiController@dispAsset');
-		Route::get('/history', 'ApiController@dispHistory');
+			//表示
+			Route::get('/asset', 'ApiController@dispAsset');
+			Route::get('/history', 'ApiController@dispHistory');
+			Route::get('/api', 'ApiController@createApi');
+			Route::post('/api', 'ApiController@registApi');
+		});
 	});
+
 });
 
