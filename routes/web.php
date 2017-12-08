@@ -28,47 +28,52 @@ Route::get('/detail', 'indexController@detail');
 
 Route::group(['middleware' => ['auth']], function () {
 
-	Route::group(['namespace' => 'bitflyer'], function () {
-		Route::group(['prefix' => 'bitflyer'], function () {
-			Route::get('/board', 'ApiController@getBoard');
-			Route::get('/getbalance', 'ApiController@getBalance');
-			Route::get('/gethistory', 'ApiController@getHistory');
-			Route::get('/getcoinouts', 'ApiController@getCoinOuts');
+	Route::group(['prefix' => 'bitflyer'], function () {
+		Route::get('/board', 'BitflyerController@getBoard');
+		Route::get('/getmarkets', 'BitflyerController@getMarket');
+		Route::get('/getbalance', 'BitflyerController@getBalance');
+		Route::get('/getcoins', 'BitflyerController@getCoins');
+		Route::get('/gethistogethistoryry', 'BitflyerController@getHistory');
+		Route::get('/getcoinouts', 'BitflyerController@getCoinOuts');
+		Route::get('/getchildorders', 'BitflyerController@getHistory');
+
+		Route::get('/order', 'BitflyerController@order');
 
 
-			//表示
-			Route::get('/asset', 'ApiController@dispAsset');
-			Route::get('/history', 'ApiController@dispHistory');
-			Route::get('/api', 'ApiController@createApi');
-			Route::post('/api', 'ApiController@registApi');
-		});
+		//表示
+		Route::get('/asset', 'BitflyerController@dispAsset');
+		Route::get('/history', 'BitflyerController@dispHistory');
+		Route::get('/api', 'BitflyerController@createApi');
+		Route::post('/api', 'BitflyerController@registApi');
 	});
 
-	Route::group(['namespace' => 'coincheck'], function () {
-		Route::group(['prefix' => 'coincheck'], function () {
-			Route::get('/board', 'ApiController@getBoard');
-			Route::get('/getbalance', 'ApiController@getBalance');
-			Route::get('/transactions', 'ApiController@getTransaction');
+	Route::group(['prefix' => 'coincheck'], function () {
+		Route::get('/board', 'CoincheckController@getBoard');
+		Route::get('/getbalance', 'CoincheckController@getBalance');
+		Route::get('/transactions', 'CoincheckController@getTransaction');
 
-			//表示
-			Route::get('/asset', 'ApiController@dispAsset');
-			Route::get('/history', 'ApiController@dispHistory');
-			Route::get('/api', 'ApiController@createApi');
-			Route::post('/api', 'ApiController@registApi');
-		});
+		Route::get('/leverage_positions', 'CoincheckController@getLeveragePositions');
+
+		Route::get('/order', 'CoincheckController@order');
+
+		//表示
+		Route::get('/asset', 'CoincheckController@dispAsset');
+		Route::get('/history', 'CoincheckController@dispHistory');
+		Route::get('/api', 'CoincheckController@createApi');
+		Route::post('/api', 'CoincheckController@registApi');
 	});
 
-	Route::group(['namespace' => 'zaif'], function () {
-		Route::group(['prefix' => 'zaif'], function () {
-			Route::get('/get_info', 'ApiController@getInfo');
-			Route::get('/trade_history', 'ApiController@tradeHistory');
+	Route::group(['prefix' => 'zaif'], function () {
+		Route::get('/get_info', 'ZaifController@getInfo');
+		Route::get('/trade_history', 'ZaifController@tradeHistory');
 
-			//表示
-			Route::get('/asset', 'ApiController@dispAsset');
-			Route::get('/history', 'ApiController@dispHistory');
-			Route::get('/api', 'ApiController@createApi');
-			Route::post('/api', 'ApiController@registApi');
-		});
+		Route::get('/order', 'ZaifController@order');
+
+		//表示
+		Route::get('/asset', 'ZaifController@dispAsset');
+		Route::get('/history', 'ZaifController@dispHistory');
+		Route::get('/api', 'ZaifController@createApi');
+		Route::post('/api', 'ZaifController@registApi');
 	});
 
 });

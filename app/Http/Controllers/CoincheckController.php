@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\coincheck;
+namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Api;
 
-class ApiController extends Controller{
+class CoincheckController extends Controller{
 	public $data;
 
 	public $api_key = '';
@@ -59,6 +59,7 @@ class ApiController extends Controller{
 		$this->data['exchange_id'] = $api_model->exchange_id;
 		$this->data['message'] = 'APIの登録が完了しました。';
 		return view('regist_api', $this->data);
+		exit;
 	}
 
 	public function generateHeader($path, $query_data = null){
@@ -75,10 +76,57 @@ class ApiController extends Controller{
 		return $header;
 	}
 
+	//注文
+	/*
+	 * $post_data = array(
+	 *		'pair' => 'btc_jpy', //現在は 'btc_jpy' のみ
+	 *		'order_type' => 'buy', //'buy','sell' * 指値,成行,レバレッジ取引新規,レバレッジ取引決済 8種類
+	 *		'rate' => 30010.0,
+	 *		'amount' => 0.1,
+	 *		'market_buy_amount' => 30000, //成行時の日本円額
+	 *		'position_id' => open, //レバレッジのポジション
+	 *      'stop_loss_rate' =>
+	 *	);
+	 */
+	public function order(){
+		$path = 'api/exchange/orders';
+		$url = self::API_URL . $path;
+		self::setParameter();
+		$header = self::generateHeader($path);
+		$post_data = array(
+	 		'pair' => 'btc_jpy', //現在は 'btc_jpy' のみ
+	 		'order_type' => 'buy', //'buy','sell' * 指値,成行,レバレッジ取引新規,レバレッジ取引決済 8種類
+	 		'rate' => 30010.0,
+	 		'amount' => 0.1,
+	 		'market_buy_amount' => 30000, //成行時の日本円額
+	 		'position_id' => 'open', //レバレッジのポジション
+	       	'stop_loss_rate' => ''
+	 	);
+		$response = self::curlPost($url, $header, $post_data);
+		echo '<Pre>';
+		var_dump('ExecFile: ' . basename(__FILE__) . '(' . __LINE__ . ')', 'FUNCTION: ' . __FUNCTION__);
+		var_dump($response);
+		exit;
+
+		return $response;
+	}
+
+	//レバレッジ取引のポジション一覧
+	public function getLeveragePositions(){
+		$path = '/api/exchange/leverage/positions';
+		$url = self::API_URL . $path;
+		self::setParameter();
+		$header = self::generateHeader($path);
+		$response = self::curlExec($url, $header);
+
+		return $response;
+	}
+
 	//残高取得
 	public function getBalance(){
 		$path = '/api/accounts/balance';
 		$url = self::API_URL . $path;
+		self::setParameter();
 		$header = self::generateHeader($path);
 		$response = self::curlExec($url, $header);
 
@@ -89,6 +137,7 @@ class ApiController extends Controller{
 	public function getTransaction(){
 		$path = '/api/exchange/orders/transactions';
 		$url = self::API_URL . $path;
+		self::setParameter();
 		$header = self::generateHeader($path);
 		$response = self::curlExec($url, $header);
 
