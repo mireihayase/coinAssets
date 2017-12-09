@@ -41,4 +41,16 @@ class Controller extends BaseController{
 
 		return json_decode($data, true);
 	}
+
+	public static function getRequest($url, $header = null, $query = null){
+		$client = new \GuzzleHttp\Client();
+		$response = $client->request( 'GET', $url,
+			[
+				'allow_redirects' => true,
+				'headers'         => $header,
+				'query' => $query
+			] );
+		$response_body = (string) $response->getBody();
+		return $response_body;
+	}
 }
