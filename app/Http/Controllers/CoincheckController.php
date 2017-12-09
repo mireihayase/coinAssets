@@ -76,6 +76,16 @@ class CoincheckController extends Controller{
 		return $header;
 	}
 
+	// 販売レート取得 @return string(rate)
+	public static function getRate($coin_pair){
+		$path = '/api/rate/';
+		$url = self::API_URL . $path . $coin_pair;
+		$response = self::getRequest($url);
+		$response_aray = json_decode($response, true);
+
+		return $response_aray['rate'];
+	}
+
 	//注文
 	/*
 	 * $post_data = array(

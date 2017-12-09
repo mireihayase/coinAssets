@@ -62,6 +62,16 @@ class ZaifController extends Controller{
 		return view('regist_api', $this->data);
 	}
 
+	// 販売レート取得 @return string(rate)
+	public static function getRate($coin_pair){
+		$path = '/last_price/';
+		$url = self::PUBLIC_BASE_URL . $path . $coin_pair;
+		$response = self::getRequest($url);
+		$response_aray = json_decode($response, true);
+
+		return $response_aray['last_price'];
+	}
+
 	//残高取得
 	public function getInfo(){
 		$nonce = time();

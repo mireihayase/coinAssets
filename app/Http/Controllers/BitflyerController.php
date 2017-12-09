@@ -102,6 +102,17 @@ class BitflyerController extends Controller{
 		return $response;
 	}
 
+	//価格情報取得
+	public static function getticker(){
+		$path = '/v1/getticker';
+		$url = self::API_URL . $path;
+		$query = ['product_code' => 'ETH_BTC'];
+		$header = null;
+		$response = self::getRequest($url, $header, $query);
+
+		return $response;
+	}
+
 	//預入履歴
 	public function getCoins(){
 //		$path = '/v1/me/getcoins';
