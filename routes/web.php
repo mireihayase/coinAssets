@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/rate_list', 'HomeController@rateList');
 
 //display template
 Route::get('/archive', 'indexController@archive');

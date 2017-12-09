@@ -1911,7 +1911,7 @@ select {
   padding: 20px; }
 
 .panel {
-  margin-bottom: 25px;
+  /*margin-bottom: 25px;*/
   background-color: #fff;
   border: 1px solid #ccc; }
 
@@ -2007,6 +2007,7 @@ select {
     border-bottom: 3px double #e0e0e0; }
     .table thead th,
     .table thead td {
+      text-align:center;
       padding-top: 14px; }
   .table tr {
     border-bottom: 1px dotted #e0e0e0; }
@@ -2014,6 +2015,7 @@ select {
       border-bottom: 0; }
   .table th,
   .table td {
+    text-align:center;
     padding: 12px 20px; }
     .table th.area-btn,
     .table td.area-btn {

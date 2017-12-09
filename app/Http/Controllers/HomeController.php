@@ -23,4 +23,12 @@ class HomeController extends Controller{
     public function index(){
         return view('home');
     }
+	public function rateList(){
+		$coin_rate_file = base_path() . '/ext/coin_rate.json';
+		$coin_rate_json = file_get_contents($coin_rate_file);
+		$coin_rate_array = json_decode($coin_rate_json);
+		$this->data['coin_rate_array'] = $coin_rate_array;
+
+		return view('rate_list', $this->data);
+	}
 }
