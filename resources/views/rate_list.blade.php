@@ -32,29 +32,28 @@
 
 
         <p class="weight--bold">価格一覧</p>
-        <table class="table table--striped">
-          <thead>
-            <tr>
-              <th>銘柄</th>
-              <th>JPY</th>
-              <th>昨日比</th>
-            </tr>
-          </thead>
-          <tbody>
+          <div class="summaries">
+            <table class="table table--striped">
+              <thead>
+                <tr>
+                  <th>銘柄</th>
+                  <th>JPY</th>
+                  <th>昨日比</th>
+                </tr>
+              </thead>
+              <tbody>
 
-            @foreach($coin_rate_array as $name => $rate)
-              <tr>
-                <td>{{$name}}
-                  <img src="../coin_img/{{$name}}.svg" style="width: 50%">
-                </td>
-                <td>{{$rate}}</td>
-                <td></td>
-              </tr>
-            @endforeach
+                @foreach($coin_rate_array as $name => $rate)
+                  <tr>
+                    <td>{{$name}}<img src="../coin_img/{{$name}}.svg" style="width: 30px; height: 30px"></td>
+                    <td>{{number_format($rate, 2)}}</td>
+                    <td class="summary__num diff success">+10.00%</td>
+                  </tr>
+                @endforeach
 
-
-          </tbody>
-        </table>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     <script src="./bower_components/jquery/dist/jquery.min.js"></script>

@@ -2016,7 +2016,7 @@ select {
   .table th,
   .table td {
     text-align:center;
-    padding: 12px 20px; }
+    padding: 12px 10px; }
     .table th.area-btn,
     .table td.area-btn {
       padding-top: 18px;
