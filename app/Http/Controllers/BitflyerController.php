@@ -250,21 +250,9 @@ class BitflyerController extends Controller{
 		return $asset_data;
 	}
 
-	public function dispAsset(){
-		self::setParameter();
-		$response = self::getBalance();
-		$this->data['assets'] = $response;
-
-		return view('btf_assets', $this->data);
-	}
-
 	public function dispHistory(){
 		self::setParameter();
 		$response = self::getHistory();
-//		echo '<Pre>';
-//		var_dump('ExecFile: ' . basename(__FILE__) . '(' . __LINE__ . ')', 'FUNCTION: ' . __FUNCTION__);
-//		var_dump($response);
-//		exit;
 		$this->data['history'] = $response;
 
 		return view('btf_history', $this->data);

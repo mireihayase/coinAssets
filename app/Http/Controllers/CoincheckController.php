@@ -187,21 +187,6 @@ class CoincheckController extends Controller{
 		return $response;
 	}
 
-	public function dispAsset(){
-		self::setParameter();
-		$response = self::getBalance();
-		array_shift($response);
-		$assets_array = [];
-		foreach ($response as $k => $v){
-			if($v != 0){
-				$assets_array[$k] = $v;
-			}
-		}
-		$this->data['assets'] = $assets_array;
-
-		return view('cc_assets', $this->data);
-	}
-
 	public function dispHistory(){
 		self::setParameter();
 		$response = self::getTransaction();

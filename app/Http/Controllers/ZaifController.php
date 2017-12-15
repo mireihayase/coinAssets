@@ -136,14 +136,6 @@ class ZaifController extends Controller{
 		return $data;
 	}
 
-	public function dispAsset(){
-		self::setParameter();
-		$response = self::getInfo();
-		$this->data['assets'] = $response['return'];
-
-		return view('zaif_assets', $this->data);
-	}
-
 	public function dispHistory(){
 		self::setParameter();
 		$response = self::tradeHistory();
