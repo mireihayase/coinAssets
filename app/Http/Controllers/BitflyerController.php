@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Api;
+use Illuminate\Support\Facades\Redis;
+
 
 class BitflyerController extends Controller{
 	public $data;
@@ -103,14 +105,35 @@ class BitflyerController extends Controller{
 	}
 
 	//価格情報取得
-	public static function getticker(){
+	public static function getticker($coin_pair){
 		$path = '/v1/getticker';
 		$url = self::API_URL . $path;
-		$query = ['product_code' => 'ETH_BTC'];
+		$query = ['product_code' => $coin_pair];
 		$header = null;
 		$response = self::getRequest($url, $header, $query);
 
 		return $response;
+	}
+
+	//redisに保存
+	//TODO LTC MONA 価格取得
+	public static function storeCoinRate(){
+		$btc_str = self::getticker('BTC_JPY');
+		$btc_class = json_decode($btc_str);
+		$btc_rate = $btc_class->best_bid;
+		$rate_arary['BTC'] = $btc_rate;
+
+		$eth_str = self::getticker('ETH_BTC');
+		$eth_class = json_decode($eth_str);
+		$eth_rate = $eth_class->best_bid;
+		$rate_arary['ETH'] = $eth_rate * $btc_rate;
+
+		$bch_str = self::getticker('BCH_BTC');
+		$bch_class = json_decode($bch_str);
+		$bch_rate = $bch_class->best_bid;
+		$rate_arary['BCH'] = $bch_rate * $btc_rate;
+
+		Redis::set('bitflyer_rate', json_encode($rate_arary));
 	}
 
 	//預入履歴

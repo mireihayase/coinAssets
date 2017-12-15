@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Api;
+use Illuminate\Support\Facades\Redis;
 
 class CoincheckController extends Controller{
 	public $data;
@@ -86,6 +87,17 @@ class CoincheckController extends Controller{
 		return $response_aray['rate'];
 	}
 
+
+	public static function storeCoinRate(){
+		$coin_rate_file = base_path() . '/ext/coin_rate.json';
+		$coincheck_coins = config('CoincheckCoins');
+		foreach ($coincheck_coins as $coin_name => $coin_pair){
+			$rate = CoincheckController::getRate($coin_pair);
+			$rate_arary[$coin_name] =$rate;
+		}
+
+		Redis::set('coincheck_rate', json_encode($rate_arary));
+	}
 	//注文
 	/*
 	 * $post_data = array(

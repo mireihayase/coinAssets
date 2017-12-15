@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Api;
+use Illuminate\Support\Facades\Redis;
 
 class ZaifController extends Controller{
 	public $api_key = '';
@@ -70,6 +71,17 @@ class ZaifController extends Controller{
 		$response_aray = json_decode($response, true);
 
 		return $response_aray['last_price'];
+	}
+
+	public static function storeCoinRate(){
+		$zaif_coins = config('ZaifCoins');
+		foreach ($zaif_coins as $coin_name => $coin_pair){
+			$rate = self::getRate($coin_pair);
+			$rate_arary[$coin_name] = $rate;
+		}
+		$rate_arary['JPY'] = 1;
+
+			Redis::set('zaif_rate', json_encode($rate_arary));
 	}
 
 	//残高取得

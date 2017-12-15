@@ -1,10 +1,11 @@
 <?php
 return [
-	'BTC',
-	'ETH',
-	'ETC',
-	'LTC',
-	'MONA'
+	'BTC' => 'BTC_JPY',
+	'ETH' => 'ETH_BTC',
+//	'ETC',
+//	'LTC',
+	'BCH' => 'BCH_BTC',
+//	'MONA'
 ];
 
 ?>

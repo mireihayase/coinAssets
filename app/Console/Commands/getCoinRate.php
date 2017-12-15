@@ -40,18 +40,8 @@ class getCoinRate extends Command {
      */
     //TODO response error時の処理
     public function handle() {
-		$coin_rate_file = base_path() . '/ext/coin_rate.json';
-		$coincheck_coins = config('CoincheckCoins');
-		foreach ($coincheck_coins as $coin_name => $coin_pair){
-			$rate = CoincheckController::getRate($coin_pair);
-			$rate_arary[$coin_name] =$rate;
-		}
-
-		//zaif のMONAのみ足りないので追加
-		$rate = ZaifController::getRate('mona_jpy');
-		$rate_arary['MONA'] =$rate;
-
-		$rate_json = json_encode($rate_arary);
-		file_put_contents($coin_rate_file, $rate_json);
+		BitflyerController::storeCoinRate();
+		CoincheckController::storeCoinRate();
+		ZaifController::storeCoinRate();
     }
 }
