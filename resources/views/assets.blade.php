@@ -19,7 +19,7 @@
 
     <div class="summaries">
       <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>総資産</span></dt>
-        <dd class="summary__body"><span class="summary__num">3,0000,000</span>
+        <dd class="summary__body"><span class="summary__num">{{number_format($assets['total'])}}</span>
           {{--<span class="summary__num diff success">+264(+400%)</span>--}}
         </dd>
       </dl>
@@ -40,13 +40,15 @@
         </tr>
         </thead>
         <tbody>
-          @foreach($assets as $v)
+          @foreach($assets['coin'] as $v)
           <tr>
             <td>{{$v['coin_name']}}</td>
             <td>{{number_format($v['amount'], 2)}}</td>
             <td>
               @if(!empty($v['convert_JPY']))
                 {{number_format($v['convert_JPY'], 2)}}
+              @else
+                0
               @endif
             </td>
           </tr>

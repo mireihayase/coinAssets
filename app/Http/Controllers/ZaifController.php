@@ -109,13 +109,16 @@ class ZaifController extends Controller{
 
 		$asset_data = [];
 		$coin_asset = [];
+		$total = 0;
 		foreach ($ammount_array as $coin_name => $amount) {
 			$coin_name_upper = strtoupper($coin_name);
 			$coin_asset['coin_name'] = $coin_name_upper;
 			$coin_asset['amount'] = $amount;
 			$coin_asset['convert_JPY'] = $amount * $coin_rate[$coin_name_upper];
-			$asset_data[] = $coin_asset;
+			$total += $coin_asset['convert_JPY'];
+			$asset_data['coin'][] = $coin_asset;
 		}
+		$asset_data['total'] = $total;
 
 		return $asset_data;
 	}

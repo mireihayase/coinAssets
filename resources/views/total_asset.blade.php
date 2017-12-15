@@ -19,7 +19,7 @@
 
         <div class="summaries">
           <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>総資産</span></dt>
-            <dd class="summary__body"><span class="summary__num">3,0000,000</span>
+            <dd class="summary__body"><span class="summary__num">{{number_format($total_asset)}}</span>
               {{--<span class="summary__num diff success">+264(+400%)</span>--}}
             </dd>
           </dl>
@@ -41,26 +41,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>BTC</td>
-              <td><a href="#">1.5</a></td>
-              <td>3,0000,000</td>
-            </tr>
-            <tr>
-              <td>JPY</td>
-              <td><a href="#">1</a></td>
-              <td>1</td>
-            </tr>
-            <tr>
-              <td>ETH</td>
-              <td><a href="#">1.4</a></td>
-              <td>50,000</td>
-            </tr>
-            <tr>
-              <td>BCH</td>
-              <td><a href="#">2.7</a></td>
-              <td>30,000</td>
-            </tr>
+            @foreach($all_assets as $exchange => $assets)
+              <tr style="background-color: gray; color:white;"><td>{{$exchange}}</td><td></td><td>{{number_format($assets['total'])}}</td></tr>
+              @foreach($assets['coin'] as $v)
+                <tr>
+                  <td>{{$v['coin_name']}}</td>
+                  <td>{{number_format($v['amount'], 2)}}</td>
+                  <td>
+                    @if(!empty($v['convert_JPY']))
+                      {{number_format($v['convert_JPY'], 2)}}
+                    @else
+                      0
+                    @endif
+                  </td>
+                </tr>
+              @endforeach
+            @endforeach
 
           </tbody>
         </table>

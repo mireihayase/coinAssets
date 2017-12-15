@@ -14,10 +14,10 @@
         <div class="scroll-content">
             <ul class="side-bar__menu">
                 <ul class="tree-menu">
-                    <li class="side-bar__list"><a href="#"><span>home(準備中)</span></a>
+                    <li class="side-bar__list"><a href="#"><span>home</span></a>
                         <ul style="display: none;">
                             <li>
-                                <a href="#">現在資産</a>
+                                <a href="/total">現在資産</a>
                             </li>
                         </ul>
                         <ul style="display: none;">

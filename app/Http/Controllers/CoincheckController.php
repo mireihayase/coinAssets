@@ -165,13 +165,16 @@ class CoincheckController extends Controller{
 
 		$asset_data = [];
 		$coin_asset = [];
+		$total = 0;
 		foreach ($coincheck_coins as $coin_name => $coin_pair){
 			$coin_asset['coin_name'] = $coin_name;
 			$coin_name_lower = mb_strtolower($coin_name);
 			$coin_asset['amount'] = $response[$coin_name_lower];
 			$coin_asset['convert_JPY'] = $coin_asset['amount'] * $coin_rate[$coin_name];
-			$asset_data[] = $coin_asset;
+			$total += $coin_asset['convert_JPY'];
+			$asset_data['coin'][] = $coin_asset;
 		}
+		$asset_data['total'] = $total;
 
 		return $asset_data;
 	}
