@@ -77,5 +77,13 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::post('/api', 'ZaifController@registApi');
 	});
 
+	//表示
+	Route::group(['prefix' => '{exchange}'], function ($exchange) {
+		Route::get('/asset', 'ShowController@dispAsset');
+		Route::get('/history', 'ShowController@dispHistory');
+		Route::get('/api', 'ShowController@createApi');
+		Route::post('/api', 'CoincheckController@registApi');
+	});
+
 });
 

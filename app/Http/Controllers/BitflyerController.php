@@ -132,6 +132,7 @@ class BitflyerController extends Controller{
 		$bch_class = json_decode($bch_str);
 		$bch_rate = $bch_class->best_bid;
 		$rate_arary['BCH'] = $bch_rate * $btc_rate;
+		$rate_arary['JPY'] = 1;
 
 		Redis::set('bitflyer_rate', json_encode($rate_arary));
 	}
@@ -226,6 +227,27 @@ class BitflyerController extends Controller{
 		var_dump($response);
 		exit;
 		return $response;
+	}
+
+	public function setAssetParams(){
+		self::setParameter();
+		$response = self::getBalance();
+		$coin_rate = Redis::get('bitflyer_rate');
+		$coin_rate = (array)json_decode($coin_rate);
+
+		$asset_data = [];
+		$coin_asset = [];
+		foreach($response as $v){
+			$coin_name = $v['currency_code'];
+			$coin_asset['coin_name'] = $coin_name;
+			$coin_asset['amount'] = $v['amount'];
+			if(!empty($coin_rate[$coin_name])){
+				$coin_asset['convert_JPY'] = $v['amount'] * $coin_rate[$coin_name];
+			}
+			$asset_data[] = $coin_asset;
+		}
+
+		return $asset_data;
 	}
 
 	public function dispAsset(){

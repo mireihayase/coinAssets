@@ -100,6 +100,26 @@ class ZaifController extends Controller{
 		return $data;
 	}
 
+	public function setAssetParams(){
+		self::setParameter();
+		$response = self::getInfo();
+		$coin_rate = Redis::get('zaif_rate');
+		$coin_rate = (array)json_decode($coin_rate);
+		$ammount_array = $response['return']['funds'];
+
+		$asset_data = [];
+		$coin_asset = [];
+		foreach ($ammount_array as $coin_name => $amount) {
+			$coin_name_upper = strtoupper($coin_name);
+			$coin_asset['coin_name'] = $coin_name_upper;
+			$coin_asset['amount'] = $amount;
+			$coin_asset['convert_JPY'] = $amount * $coin_rate[$coin_name_upper];
+			$asset_data[] = $coin_asset;
+		}
+
+		return $asset_data;
+	}
+
 	//取引履歴を取得
 	public function tradeHistory(){
 		$nonce = time();

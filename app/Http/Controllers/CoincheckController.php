@@ -95,6 +95,7 @@ class CoincheckController extends Controller{
 			$rate = CoincheckController::getRate($coin_pair);
 			$rate_arary[$coin_name] =$rate;
 		}
+		$rate_arary['JPY'] = 1;
 
 		Redis::set('coincheck_rate', json_encode($rate_arary));
 	}
@@ -153,6 +154,26 @@ class CoincheckController extends Controller{
 		$response = self::curlExec($url, $header);
 
 		return $response;
+	}
+
+	public function setAssetParams(){
+		self::setParameter();
+		$response = self::getBalance();
+		$coin_rate = Redis::get('coincheck_rate');
+		$coin_rate = (array)json_decode($coin_rate);
+		$coincheck_coins = config('CoincheckCoins');
+
+		$asset_data = [];
+		$coin_asset = [];
+		foreach ($coincheck_coins as $coin_name => $coin_pair){
+			$coin_asset['coin_name'] = $coin_name;
+			$coin_name_lower = mb_strtolower($coin_name);
+			$coin_asset['amount'] = $response[$coin_name_lower];
+			$coin_asset['convert_JPY'] = $coin_asset['amount'] * $coin_rate[$coin_name];
+			$asset_data[] = $coin_asset;
+		}
+
+		return $asset_data;
 	}
 
 	//取引履歴取得
