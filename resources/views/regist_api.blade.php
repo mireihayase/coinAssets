@@ -22,12 +22,12 @@
           <div class="panel__body">
             <dl class="data-list"><dt class="data-list__title">API Key</dt>
               <dd class="data-list__body">
-                <input type="text" name="api_key" placeholder="{{$api_key}}" value="{{$api_key}}" class="input--large" size="60">
+                <input type="text" name="api_key" placeholder="API Keyを入力してください" value="{{$api_key}}" class="input--large" size="60">
               </dd>
             </dl>
             <dl class="data-list"><dt class="data-list__title">API Secret</dt>
               <dd class="data-list__body">
-                <input type="password" name="api_secret" placeholder="{{$api_secret}}" value="{{$api_secret}}"  class="input--large"size="60">
+                <input type="password" name="api_secret" placeholder="API Secretを入力してください" value="{{$api_secret}}"  class="input--large"size="60">
               </dd>
             </dl>
           </div>
@@ -42,8 +42,8 @@
         </form>
       </div>
     </div>
-    {{--<script src="./bower_components/jquery/dist/jquery.min.js"></script>--}}
-    {{--<script src="./bower_components/adminize/js/adminize.min.js"></script>--}}
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../../bower_components/adminize/js/adminize.min.js"></script>
   </body>
 
 </html>

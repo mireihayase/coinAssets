@@ -32,9 +32,9 @@
         @foreach($transaction as $v)
           <tr>
             <td>{{$v['currency_pair']}}</td>
-            <td>{{$v['action']}}</td>
+            <td>{{$v['your_action']}}</td>
+            <td>{{$v['amount']}}</td>
             <td>{{$v['price']}}</td>
-            <td>{{$v['action']}}</td>
             <td>{{date( "Y-m-d H:i:s", $v['timestamp'])}}</td>
           </tr>
         @endforeach

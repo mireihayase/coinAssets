@@ -42,15 +42,16 @@
                 </tr>
               </thead>
               <tbody>
-
-                @foreach($coin_rate_array as $name => $rate)
-                  <tr>
-                    <td>{{$name}}<img src="../coin_img/{{$name}}.svg" style="width: 30px; height: 30px"></td>
-                    <td>{{number_format($rate, 2)}}</td>
-                    <td class="summary__num diff success">+10.00%</td>
-                  </tr>
+                @foreach($coin_rate_array as $exchange => $rate_array)
+                  <tr style="background-color: gray; color:white;"><td>{{$exchange}}</td><td></td><td></td><tr>
+                  @foreach($rate_array as $name => $rate)
+                    <tr>
+                      <td>{{$name}}<img src="../coin_img/@if($name != 'MONA'){{$name}}.svg @else{{$name}}.png @endif " style="width: 30px; height: 30px"></td>
+                      <td>{{number_format($rate, 2)}}</td>
+                      <td class="summary__num diff success">+10.00%</td>
+                    </tr>
+                  @endforeach
                 @endforeach
-
               </tbody>
             </table>
           </div>

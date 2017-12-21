@@ -145,10 +145,7 @@ class BitflyerController extends Controller{
 		self::setParameter();
 		$header = self::generateHeader($path);
 		$response = self::curlExec($url, $header);
-		echo '<Pre>';
-		var_dump('ExecFile: ' . basename(__FILE__) . '(' . __LINE__ . ')', 'FUNCTION: ' . __FUNCTION__);
-		var_dump($response);
-		exit;
+
 		return $response;
 	}
 

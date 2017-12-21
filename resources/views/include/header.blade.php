@@ -3,7 +3,7 @@
 <div class="head-bar js-headbar">
     <div class="head-bar__toggle js-head-toggle"></div>
     <div class="user-dropdown js-dropdown">
-        <div class="user-name">{{$user_name}}</div>
+        {{--<div class="user-name">{{$user_name}}</div>--}}
         <div class="user-avatar"><img src="http://www.gravatar.com/avatar/b58f6ebea2155370e2daf60c369616b1" alt="username" /></div>
         <div class="user-menu"><i class="caret"><i class="caret-outer"></i><i class="caret-inner"></i></i>
             <ul class="user-menu__content">

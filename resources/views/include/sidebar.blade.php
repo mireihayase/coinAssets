@@ -14,18 +14,8 @@
         <div class="scroll-content">
             <ul class="side-bar__menu">
                 <ul class="tree-menu">
-                    <li class="side-bar__list"><a href="#"><span>home</span></a>
-                        <ul style="display: none;">
-                            <li>
-                                <a href="/total">現在資産</a>
-                            </li>
-                        </ul>
-                        <ul style="display: none;">
-                            <li>
-                                <a href="#">取引履歴</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <li class="side-bar__list"><a href="/"><span>総資産</span></a></li>
+                    <li class="side-bar__list"><a href="/rate_list"><span>価格一覧</span></a></li>
                 </ul>
 
                 <ul class="tree-menu">
