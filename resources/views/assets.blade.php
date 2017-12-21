@@ -15,7 +15,7 @@
       <li class="breadcrumbs__list"><a href="#">Home</a></li>
       <li class="breadcrumbs__list">Asset</li>
     </ul>
-    <h1 class="page-header" style="margin-bottom: 0px;"><i class="fa fa-file-text"></i><span>Archive template</span></h1>
+    <h1 class="page-header" style="margin-bottom: 0px;"><i class="fa fa-file-text"></i><span>{{$exchange}}</span></h1>
 
     <div class="summaries">
       <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>総資産</span></dt>

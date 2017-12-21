@@ -42,7 +42,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 		//表示
-		Route::get('/asset', 'BitflyerController@dispAsset');
 		Route::get('/history', 'BitflyerController@dispHistory');
 		Route::get('/api', 'BitflyerController@createApi');
 		Route::post('/api', 'BitflyerController@registApi');
@@ -58,7 +57,6 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/order', 'CoincheckController@order');
 
 		//表示
-		Route::get('/asset', 'CoincheckController@dispAsset');
 		Route::get('/history', 'CoincheckController@dispHistory');
 		Route::get('/api', 'CoincheckController@createApi');
 		Route::post('/api', 'CoincheckController@registApi');
@@ -71,7 +69,6 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/order', 'ZaifController@order');
 
 		//表示
-		Route::get('/asset', 'ZaifController@dispAsset');
 		Route::get('/history', 'ZaifController@dispHistory');
 		Route::get('/api', 'ZaifController@createApi');
 		Route::post('/api', 'ZaifController@registApi');
@@ -80,7 +77,7 @@ Route::group(['middleware' => ['auth']], function () {
 	//表示
 	Route::group(['prefix' => '{exchange}'], function ($exchange) {
 		Route::get('/asset', 'ShowController@dispAsset');
-		Route::get('/history', 'ShowController@dispHistory');
+//		Route::get('/history', 'ShowController@dispHistory');
 		Route::get('/api', 'ShowController@createApi');
 		Route::post('/api', 'CoincheckController@registApi');
 	});

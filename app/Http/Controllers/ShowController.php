@@ -53,6 +53,7 @@ class ShowController extends Controller{
 		$controller = self::getController($exchange);
 		$asset_params = $controller->setAssetParams();
 		$this->data['assets'] = $asset_params;
+		$this->data['exchange'] = $exchange;
 
 		return view('assets', $this->data);
 	}

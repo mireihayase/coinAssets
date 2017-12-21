@@ -15,7 +15,7 @@
       <li class="breadcrumbs__list"><a href="#">Home</a></li>
       <li class="breadcrumbs__list">Asset</li>
     </ul>
-    <h1 class="page-header"><i class="fa fa-file-text"></i><span>Archive template</span></h1>
+    <h1 class="page-header"><i class="fa fa-file-text"></i><span>Coincheck 取引履歴</span></h1>
 
     <table class="table table--striped">
       <thead>
