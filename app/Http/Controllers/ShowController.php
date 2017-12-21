@@ -52,6 +52,30 @@ class ShowController extends Controller{
 		return view('total_asset', $this->data);
 	}
 
+
+	public function rateList(){
+		$coin_rate_array = [];
+		$bitflyer_coin_rate = Redis::get('bitflyer_rate');
+		$bitflyer_coin_rate = (array)json_decode($bitflyer_coin_rate);
+		unset($bitflyer_coin_rate['JPY']);
+		$coin_rate_array['bitflyer'] = $bitflyer_coin_rate;
+
+		$coincheck_coin_rate = Redis::get('coincheck_rate');
+		$coincheck_coin_rate = (array)json_decode($coincheck_coin_rate);
+		unset($coincheck_coin_rate['JPY']);
+		$coin_rate_array['coincheck'] = $coincheck_coin_rate;
+
+		$zaif_coin_rate = Redis::get('zaif_rate');
+		$zaif_coin_rate = (array)json_decode($zaif_coin_rate);
+		unset($zaif_coin_rate['JPY']);
+		$coin_rate_array['zaif'] = $zaif_coin_rate;
+
+		$this->data['coin_rate_array'] = $coin_rate_array;
+
+		return view('rate_list', $this->data);
+	}
+
+	// /$exchange/asset
 	public function dispAsset($exchange){
 		$controller = self::getController($exchange);
 		$asset_params = $controller->setAssetParams();

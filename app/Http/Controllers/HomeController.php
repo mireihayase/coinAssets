@@ -21,7 +21,7 @@ class HomeController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        return view('home');
+    	return redirect('/');
     }
 	public function rateList(){
 		$coin_rate_file = base_path() . '/ext/coin_rate.json';
