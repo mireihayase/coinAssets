@@ -15,7 +15,7 @@
       <li class="breadcrumbs__list"><a href="#">Home</a></li>
       <li class="breadcrumbs__list">Asset</li>
     </ul>
-    <h1 class="page-header"><i class="fa fa-file-text"></i><span>Archive template</span></h1>
+    <h1 class="page-header"><i class="fa fa-file-text"></i><span>bitflyer 取引履歴</span></h1>
 
     <table class="table table--striped">
       <thead>
@@ -30,11 +30,11 @@
       <tbody>
       @foreach($history as $v)
         <tr>
-          <td>{{$v['currency_code']}}</td>
-          <td>{{$v['amount']}}</td>
-          <td></td>
-          <td></td>
-          <td>{{$v['event_date']}}</td>
+          <td>{{$v['product_code']}}</td>
+          <td>{{$v['side']}}</td>
+          <td>{{$v['size']}}</td>
+          <td>{{$v['price']}}</td>
+          <td>{{$v['child_order_date']}}</td>
         </tr>
       @endforeach
       </tbody>
