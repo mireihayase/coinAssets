@@ -23,16 +23,14 @@ class BitflyerController extends Controller{
 
 	}
 
-	public function setParameter(){
+	public function setParameter($user_id = null){
 		$exchange_id = config('exchanges.bitflyer');
 		$this->data['exchange_id'] = $exchange_id;
-		$user_id = Auth::id();
+		$user_id = empty($user_id) ? Auth::id() : $user_id;
 		$api_model = new Api;
 		$api = $api_model::where('user_id', $user_id)->where('exchange_id', $exchange_id)->first();
-
 		$this->api_key = !empty($api) ? $api->api_key : '';
 		$this->api_secret = !empty($api) ? $api->api_secret : '';
-		$this->data['user_name'] = Auth::user()->name;
 	}
 
 	public function generateHeader($path, $query_data = null){
@@ -116,7 +114,6 @@ class BitflyerController extends Controller{
 	}
 
 	//redisに保存
-	//TODO LTC MONA 価格取得
 	public static function storeCoinRate(){
 		$btc_str = self::getticker('BTC_JPY');
 		$btc_class = json_decode($btc_str);
@@ -132,6 +129,16 @@ class BitflyerController extends Controller{
 		$bch_class = json_decode($bch_str);
 		$bch_rate = $bch_class->best_bid;
 		$rate_arary['BCH'] = $bch_rate * $btc_rate;
+
+		//TODO LTC MONA 価格取得
+		$coincheck_rate = Redis::get('coincheck_rate');
+		$coincheck_rate = json_decode($coincheck_rate);
+		$rate_arary['LTC'] = $coincheck_rate->LTC;
+
+		$zaif_rate = Redis::get('zaif_rate');
+		$zaif_rate = json_decode($zaif_rate);
+		$rate_arary['MONA'] = $zaif_rate->MONA;
+
 		$rate_arary['JPY'] = 1;
 
 		Redis::set('bitflyer_rate', json_encode($rate_arary));
@@ -150,10 +157,10 @@ class BitflyerController extends Controller{
 	}
 
 	//資産残高を取得
-	public function getBalance(){
+	public function getBalance($user_id = null){
 		$path = '/v1/me/getbalance';
 		$url = self::API_URL . $path;
-		self::setParameter();
+		self::setParameter($user_id);
 		$header = self::generateHeader($path);
 		$response = self::curlExec($url, $header);
 
@@ -226,26 +233,30 @@ class BitflyerController extends Controller{
 		return $response;
 	}
 
-	public function setAssetParams(){
-		self::setParameter();
-		$response = self::getBalance();
+	public function setAssetParams($user_id = null){
+		$response = self::getBalance($user_id);
 		$coin_rate = Redis::get('bitflyer_rate');
 		$coin_rate = (array)json_decode($coin_rate);
-
 		$asset_data = [];
 		$coin_asset = [];
 		$total = 0;
-		foreach($response as $v){
-			$coin_name = $v['currency_code'];
-			$coin_asset['coin_name'] = $coin_name;
-			$coin_asset['amount'] = $v['amount'];
-			if(!empty($coin_rate[$coin_name])){
-				$coin_asset['convert_JPY'] = $v['amount'] * $coin_rate[$coin_name];
-				$total += $coin_asset['convert_JPY'];
+
+		if(empty($response['error_message'])) {
+			foreach ($response as $v) {
+				$coin_name = $v['currency_code'];
+				$coin_asset['coin_name'] = $coin_name;
+				$coin_asset['amount'] = $v['amount'];
+				if (!empty($coin_rate[$coin_name])) {
+					$coin_asset['convert_JPY'] = $v['amount'] * $coin_rate[$coin_name];
+					$total += $coin_asset['convert_JPY'];
+				}
+				$asset_data['coin'][] = $coin_asset;
 			}
-			$asset_data['coin'][] = $coin_asset;
+			$asset_data['total'] = $total;
+		}else{
+			//TODO log追加
+			$asset_data['total'] = 0;
 		}
-		$asset_data['total'] = $total;
 
 		return $asset_data;
 	}

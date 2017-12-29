@@ -20,16 +20,14 @@ class CoincheckController extends Controller{
 
 	}
 
-	public function setParameter(){
+	public function setParameter($user_id = null){
 		$exchange_id = config('exchanges.coincheck');
 		$this->data['exchange_id'] = $exchange_id;
-		$user_id = Auth::id();
+		$user_id = empty($user_id) ? Auth::id() : $user_id;
 		$api_model = new Api;
 		$api = $api_model::where('user_id', $user_id)->where('exchange_id', $exchange_id)->first();
-
 		$this->api_key = !empty($api) ? $api->api_key : '';
 		$this->api_secret = !empty($api) ? $api->api_secret : '';
-		$this->data['user_name'] = Auth::user()->name;
 	}
 
 	public function createApi(){
@@ -146,19 +144,18 @@ class CoincheckController extends Controller{
 	}
 
 	//残高取得
-	public function getBalance(){
+	public function getBalance($user_id = null){
 		$path = '/api/accounts/balance';
 		$url = self::API_URL . $path;
-		self::setParameter();
+		self::setParameter($user_id);
 		$header = self::generateHeader($path);
 		$response = self::curlExec($url, $header);
 
 		return $response;
 	}
 
-	public function setAssetParams(){
-		self::setParameter();
-		$response = self::getBalance();
+	public function setAssetParams($user_id = null){
+		$response = self::getBalance($user_id);
 		$coin_rate = Redis::get('coincheck_rate');
 		$coin_rate = (array)json_decode($coin_rate);
 		$coincheck_coins = config('CoincheckCoins');
@@ -166,15 +163,20 @@ class CoincheckController extends Controller{
 		$asset_data = [];
 		$coin_asset = [];
 		$total = 0;
-		foreach ($coincheck_coins as $coin_name => $coin_pair){
-			$coin_asset['coin_name'] = $coin_name;
-			$coin_name_lower = mb_strtolower($coin_name);
-			$coin_asset['amount'] = $response[$coin_name_lower];
-			$coin_asset['convert_JPY'] = $coin_asset['amount'] * $coin_rate[$coin_name];
-			$total += $coin_asset['convert_JPY'];
-			$asset_data['coin'][] = $coin_asset;
+		if($response['success'] == true) {
+			foreach ($coincheck_coins as $coin_name => $coin_pair) {
+				$coin_asset['coin_name'] = $coin_name;
+				$coin_name_lower = mb_strtolower($coin_name);
+				$coin_asset['amount'] = $response[$coin_name_lower];
+				$coin_asset['convert_JPY'] = $coin_asset['amount'] * $coin_rate[$coin_name];
+				$total += $coin_asset['convert_JPY'];
+				$asset_data['coin'][] = $coin_asset;
+			}
+			$asset_data['total'] = $total;
+		}else{
+			//TODO log追加
+			$asset_data['total'] = 0;
 		}
-		$asset_data['total'] = $total;
 
 		return $asset_data;
 	}

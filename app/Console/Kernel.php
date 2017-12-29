@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\getCoinRate',
+		'App\Console\Commands\InsertAssetHistory',
     ];
 
     /**
@@ -26,6 +27,8 @@ class Kernel extends ConsoleKernel
     {
          $schedule->command('getCoinRate')
 			 ->everyFiveMinutes();
+		$schedule->command('InsertAssetHistory')
+			->daily();
     }
 
     /**

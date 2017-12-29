@@ -21,16 +21,14 @@ class ZaifController extends Controller{
 
 	}
 
-	public function setParameter(){
+	public function setParameter($user_id = null){
 		$exchange_id = config('exchanges.zaif');
 		$this->data['exchange_id'] = $exchange_id;
-		$user_id = Auth::id();
+		$user_id = empty($user_id) ? Auth::id() : $user_id;
 		$api_model = new Api;
 		$api = $api_model::where('user_id', $user_id)->where('exchange_id', $exchange_id)->first();
-
 		$this->api_key = !empty($api) ? $api->api_key : '';
 		$this->api_secret = !empty($api) ? $api->api_secret : '';
-		$this->data['user_name'] = Auth::user()->name;
 	}
 
 	public function createApi(){
@@ -85,10 +83,11 @@ class ZaifController extends Controller{
 	}
 
 	//残高取得
-	public function getInfo(){
+	public function getInfo($user_id = null){
 		$nonce = time();
 		$path = 'get_info';
 		$postdata = array( "nonce" => $nonce, "method" => $path );
+		self::setParameter($user_id);
 		if( !empty( $prms ) ) {
 			$postdata = array_merge( $postdata, $prms );
 		}
@@ -100,25 +99,29 @@ class ZaifController extends Controller{
 		return $data;
 	}
 
-	public function setAssetParams(){
-		self::setParameter();
-		$response = self::getInfo();
+	public function setAssetParams($user_id = null){
+		$response = self::getInfo($user_id);
 		$coin_rate = Redis::get('zaif_rate');
 		$coin_rate = (array)json_decode($coin_rate);
-		$ammount_array = $response['return']['funds'];
 
 		$asset_data = [];
 		$coin_asset = [];
 		$total = 0;
-		foreach ($ammount_array as $coin_name => $amount) {
-			$coin_name_upper = strtoupper($coin_name);
-			$coin_asset['coin_name'] = $coin_name_upper;
-			$coin_asset['amount'] = $amount;
-			$coin_asset['convert_JPY'] = $amount * $coin_rate[$coin_name_upper];
-			$total += $coin_asset['convert_JPY'];
-			$asset_data['coin'][] = $coin_asset;
+		if($response['success'] == 1) {
+			$ammount_array = $response['return']['funds'];
+			foreach ($ammount_array as $coin_name => $amount) {
+				$coin_name_upper = strtoupper($coin_name);
+				$coin_asset['coin_name'] = $coin_name_upper;
+				$coin_asset['amount'] = $amount;
+				$coin_asset['convert_JPY'] = $amount * $coin_rate[$coin_name_upper];
+				$total += $coin_asset['convert_JPY'];
+				$asset_data['coin'][] = $coin_asset;
+			}
+			$asset_data['total'] = $total;
+		}else{
+			//TODO log追加
+			$asset_data['total'] = 0;
 		}
-		$asset_data['total'] = $total;
 
 		return $asset_data;
 	}
