@@ -10,6 +10,8 @@ use App\Http\Controllers\CoincheckController;
 use App\Http\Controllers\ZaifController;
 use Illuminate\Support\Facades\Redis;
 use App\Api;
+use App\AssetHistory;
+
 
 class ShowController extends Controller{
 
@@ -46,6 +48,10 @@ class ShowController extends Controller{
 		$total_asset += $zaif_assets['total'];
 		$asset_params['zaif'] = $zaif_assets;
 
+		$yesterday_amount = AssetHistory::where('user_id', Auth::id())->whereDate('date',  date('Y-m-d', strtotime('-2 day', time())))->first();
+		$daily_gain = $total_asset - $yesterday_amount->amount;
+
+		$this->data['daily_gain'] = $daily_gain;
 		$this->data['all_assets'] = $asset_params;
 		$this->data['total_asset'] = $total_asset;
 

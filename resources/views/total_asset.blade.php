@@ -24,7 +24,7 @@
             </dd>
           </dl>
           <dl class="panel"><dt class="summary__head"><i class="fa fa-film"></i><span>日次損益</span></dt>
-            <dd class="summary__body"><span class="summary__num">2,450</span>
+            <dd class="summary__body"><span class="summary__num">{{number_format($daily_gain)}}</span>
               {{--<span class="summary__num diff danger">-1,000(-100%)</span>--}}
             </dd>
           </dl>
