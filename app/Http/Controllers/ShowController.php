@@ -59,7 +59,7 @@ class ShowController extends Controller{
 	}
 
 
-	public function rateList(){
+	public function priceList(){
 		$coin_rate_array = [];
 		$bitflyer_coin_rate = Redis::get('bitflyer_rate');
 		$bitflyer_coin_rate = (array)json_decode($bitflyer_coin_rate);
@@ -78,7 +78,7 @@ class ShowController extends Controller{
 
 		$this->data['coin_rate_array'] = $coin_rate_array;
 
-		return view('rate_list', $this->data);
+		return view('price_list', $this->data);
 	}
 
 	// /$exchange/asset

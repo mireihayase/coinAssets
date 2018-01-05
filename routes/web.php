@@ -73,7 +73,7 @@ Route::group(['middleware' => ['auth']], function () {
 	});
 	Route::get('/total', 'ShowController@totalAsset');
 	Route::get('/', 'ShowController@totalAsset');
-	Route::get('/rate_list', 'ShowController@rateList');
+	Route::get('/price_list', 'ShowController@priceList');
 
 });
 
