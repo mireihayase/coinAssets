@@ -32,28 +32,28 @@ class ShowController extends Controller{
 	}
 
 	public function totalAsset(){
-		$total_asset = 0;
+		$total_amount = 0;
 		$bitflyerController = new BitflyerController;
 		$bitflyer_assets = $bitflyerController->setAssetParams();
-		$total_asset += $bitflyer_assets['total'];
+		$total_amount += $bitflyer_assets['total'];
 		$asset_params['bitflyer'] = $bitflyer_assets;
 
 		$coincheckController = new CoincheckController;
 		$coincheck_assets = $coincheckController->setAssetParams();
-		$total_asset += $coincheck_assets['total'];
+		$total_amount += $coincheck_assets['total'];
 		$asset_params['coincheck'] = $coincheck_assets;
 
 		$zaifController = new ZaifController;
 		$zaif_assets = $zaifController->setAssetParams();
-		$total_asset += $zaif_assets['total'];
+		$total_amount += $zaif_assets['total'];
 		$asset_params['zaif'] = $zaif_assets;
 
 		$yesterday_amount = AssetHistory::where('user_id', Auth::id())->whereDate('date',  date('Y-m-d', strtotime('-2 day', time())))->first();
-		$daily_gain = $total_asset - $yesterday_amount->amount;
+		$daily_gain = $total_amount - $yesterday_amount->amount;
 
 		$this->data['daily_gain'] = $daily_gain;
 		$this->data['all_assets'] = $asset_params;
-		$this->data['total_asset'] = $total_asset;
+		$this->data['total_amount'] = $total_amount;
 
 		return view('total_asset', $this->data);
 	}
