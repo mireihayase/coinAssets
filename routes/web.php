@@ -73,6 +73,9 @@ Route::group(['middleware' => ['auth']], function () {
 	});
 	Route::get('/total', 'ShowController@totalAsset');
 	Route::get('/', 'ShowController@totalAsset');
+	Route::get('/coin_ratio', 'ShowController@coinRatio');
+	Route::get('/api/coin_ratio', 'ApiController@coinRatio');
+
 	Route::get('/price_list', 'ShowController@priceList');
 
 });
