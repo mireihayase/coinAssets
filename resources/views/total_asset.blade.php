@@ -19,7 +19,7 @@
 
         <div class="summaries">
           <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>総資産</span></dt>
-            <dd class="summary__body"><span class="summary__num">{{number_format($total_amount)}}</span>
+            <dd class="summary__body"><span class="summary__num">{{number_format($total_amount)}} 円</span>
               {{--<span class="summary__num diff success">+264(+400%)</span>--}}
             </dd>
           </dl>

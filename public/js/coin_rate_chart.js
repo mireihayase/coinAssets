@@ -3,7 +3,7 @@ $.ajax({
     url: "/api/coin_ratio",
     dataType: "json"
 }).done(function( data, textStatus, jqXHR){ //成功した場合
-    var ratio = data['ratio'];
+    var ratio = data;
     var coin_name_array = [];
     var amount_array = [];
     for(var coin_name in ratio){

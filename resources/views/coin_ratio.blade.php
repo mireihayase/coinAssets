@@ -14,19 +14,46 @@
 
 
 <div class="main-contents">
-
-    <div id="canvas-holder" style="width:100%">
-        <canvas id="chart-area" />
-    </div>
-
-
     <div class="main-contents__body">
 
-        <div id="canvas-holder" style="width:100%">
-            <canvas id="chart-area" />
-        </div>
+        <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>総資産</span></dt>
+            <dd class="summary__body"><span class="summary__num">{{number_format($total_amount)}} 円</span>
+                <div id="canvas-holder" style="width:100%">
+                    <canvas id="chart-area" />
+                </div>
+            </dd>
+        </dl>
 
+        <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>保有資産</span></dt>
+        <table class="table table--striped">
+            <thead>
+            <tr>
+                <th>銘柄</th>
+                <th>保有数</th>
+                <th>JPY換算</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($amount as $coin_name => $assets)
+                <tr>
+                    <td>{{$coin_name}}</td>
+                    <td>{{number_format($assets['amount'], 2)}}</td>
+                    <td>
+                        {{--@if(!empty($v['convert_JPY']))--}}
+                            {{number_format($assets['convert_JPY'])}}
+                        {{--@else--}}
+                            {{--0--}}
+                        {{--@endif--}}
+                    </td>
+                </tr>
+            @endforeach
+
+            </tbody>
+        </table>
     </div>
+
+
+
 </div>
 <script src="./bower_components/jquery/dist/jquery.min.js"></script>
 <script src="./bower_components/adminize/js/adminize.min.js"></script>

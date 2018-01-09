@@ -58,6 +58,44 @@ class ShowController extends Controller{
 		return view('total_asset', $this->data);
 	}
 
+	//todo APIで共通化する
+	public function coinRatio(){
+		$total_amount = 0;
+		$bitflyerController = new BitflyerController;
+		$bitflyer_assets = $bitflyerController->setAssetParams();
+		$total_amount += $bitflyer_assets['total'];
+		$asset_params['bitflyer'] = $bitflyer_assets;
+		$coincheckController = new CoincheckController;
+		$coincheck_assets = $coincheckController->setAssetParams();
+		$total_amount += $coincheck_assets['total'];
+		$asset_params['coincheck'] = $coincheck_assets;
+		$zaifController = new ZaifController;
+		$zaif_assets = $zaifController->setAssetParams();
+		$total_amount += $zaif_assets['total'];
+		$asset_params['zaif'] = $zaif_assets;
+
+		$coin_amount = [];
+		$coin_amount += config('BitflyerCoins');
+		$coin_amount += config('CoincheckCoins');
+		$coin_amount += config('ZaifCoins');
+		$coin_amount['JPY'] = 0;
+		foreach ($coin_amount as $coin_name => $v) {
+			$coin_amount[$coin_name] = [];
+			$coin_amount[$coin_name]['convert_JPY'] = 0;
+			$coin_amount[$coin_name]['amount'] = 0;
+		}
+		foreach ($asset_params as $exchange => $coin_info) {
+			foreach ($coin_info['coin'] as $coin) {
+				$coin_amount[$coin['coin_name']]['convert_JPY'] += $coin['convert_JPY'];
+				$coin_amount[$coin['coin_name']]['amount'] += $coin['amount'];
+			}
+		}
+
+		$this->data['total_amount'] = $total_amount;
+		$this->data['amount'] = $coin_amount;
+
+		return view('coin_ratio', $this->data);
+	}
 
 	public function priceList(){
 		$coin_rate_array = [];
