@@ -113,6 +113,43 @@ class BitflyerController extends Controller{
 		return $response;
 	}
 
+	//入金情報取得
+	public function getDeposits() {
+		$path = '/v1/me/getdeposits';
+		$url = self::API_URL . $path;
+		self::setParameter();
+		$header = self::generateHeader($path);
+		$response = self::curlExec($url, $header);
+
+		return $response;
+	}
+
+	//出金情報取得
+	public function getWithDraw() {
+		$path = '/v1/me/getwithdrawals';
+		$url = self::API_URL . $path;
+		self::setParameter();
+		$header = self::generateHeader($path);
+		$response = self::curlExec($url, $header);
+
+		return $response;
+	}
+
+	//累積損益
+	public function cumulativeProfit() {
+		$assets_array = self::setAssetParams();
+		$total_asset = $assets_array['total'];
+
+		$deposits_array = self::getDeposits();
+		$total_deposit = 0;
+		foreach ($deposits_array as $v) {
+			$total_deposit += $v['amount'];
+		}
+		$cumulative_profit = $total_asset - $total_deposit;
+
+		return $cumulative_profit;
+	}
+
 	//redisに保存
 	public static function storeCoinRate(){
 		$btc_str = self::getticker('BTC_JPY');

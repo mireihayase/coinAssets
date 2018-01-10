@@ -143,6 +143,18 @@ class CoincheckController extends Controller{
 		return $response;
 	}
 
+	//入金情報取得
+	public function getDeposits() {
+		$path = '/api/deposit_money?currency=BTC';
+		$url = self::API_URL . $path;
+		$query = ['product_code' => 'BTC'];
+		self::setParameter();
+		$header = self::generateHeader($path);
+		$response = self::curlExec($url, $header);
+
+		return $response;
+	}
+
 	//残高取得
 	public function getBalance($user_id = null){
 		$path = '/api/accounts/balance';

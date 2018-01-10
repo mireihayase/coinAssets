@@ -34,6 +34,11 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/getcoinouts', 'BitflyerController@getCoinOuts');
 		Route::get('/getchildorders', 'BitflyerController@getHistory');
 
+		Route::get('/getdeposits', 'BitflyerController@getDeposits');
+		Route::get('/getwithdrawals', 'BitflyerController@getWithDraw');
+
+		Route::get('/cumulativeProfit', 'BitflyerController@cumulativeProfit');
+
 		Route::get('/order', 'BitflyerController@order');
 
 
@@ -43,6 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::group(['prefix' => 'coincheck'], function () {
 		Route::get('/board', 'CoincheckController@getBoard');
+		Route::get('/getdeposits', 'CoincheckController@getDeposits');
 		Route::get('/getbalance', 'CoincheckController@getBalance');
 		Route::get('/transactions', 'CoincheckController@getTransaction');
 
