@@ -4,14 +4,14 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssetHistoryTable extends Migration {
+class CreateDailyAssetHistoryTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
     public function up() {
-		Schema::create('asset_histories', function (Blueprint $table) {
+		Schema::create('daily_asset_histories', function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('user_id');
 			$table->string('amount');
@@ -26,6 +26,6 @@ class CreateAssetHistoryTable extends Migration {
      * @return void
      */
     public function down() {
-		Schema::drop('asset_histories');
+		Schema::drop('daily_asset_histories');
     }
 }
