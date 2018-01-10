@@ -80,9 +80,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/total', 'ShowController@totalAsset');
 	Route::get('/', 'ShowController@totalAsset');
 	Route::get('/coin_ratio', 'ShowController@coinRatio');
-	Route::get('/asset_history', 'ShowController@DailyAssetHistory');
+	Route::get('/asset_history', 'ShowController@dailyAssetHistory');
 	Route::get('/api/coin_ratio', 'ApiController@coinRatio');
-	Route::get('/api/daily_asset_history', 'ApiController@DailyAssetHistory');
+	Route::get('/api/daily_asset_history', 'ApiController@dailyAssetHistory');
 
 	Route::get('/price_list', 'ShowController@priceList');
 

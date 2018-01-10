@@ -126,14 +126,14 @@ class ApiController extends Controller{
 		return json_encode($coin_asset);
 	}
 
-	public function DailyAssetHistory() {
+	public function dailyAssetHistory() {
 		$asset_history_model = new DailyAssetHistory;
 		$daily_asset_histories_array = $asset_history_model::where('user_id', Auth::id())->take(30)->get();
 
 		$asset_array = [];
 		foreach ($daily_asset_histories_array as $asset_history) {
 			$date = date('n/j', strtotime($asset_history->date));
-			$asset_array[$date] =  $asset_history->amount;//number_format($asset_history->amount, 2);
+			$asset_array[$date] =  $asset_history->amount;
 		}
 		ksort($asset_array);
 

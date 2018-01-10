@@ -97,7 +97,7 @@ class ShowController extends Controller{
 		return view('coin_ratio', $this->data);
 	}
 
-	public function DailyAssetHistory() {
+	public function dailyAssetHistory() {
 		$total_amount = 0;
 		$bitflyerController = new BitflyerController;
 		$bitflyer_assets = $bitflyerController->setAssetParams();
