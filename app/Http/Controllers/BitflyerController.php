@@ -131,13 +131,10 @@ class BitflyerController extends Controller{
 		$rate_arary['BCH'] = $bch_rate * $btc_rate;
 
 		//TODO LTC MONA 価格取得
-		$coincheck_rate = Redis::get('coincheck_rate');
-		$coincheck_rate = json_decode($coincheck_rate);
-		$rate_arary['LTC'] = $coincheck_rate->LTC;
-
-		$zaif_rate = Redis::get('zaif_rate');
-		$zaif_rate = json_decode($zaif_rate);
-		$rate_arary['MONA'] = $zaif_rate->MONA;
+		$coincheckController = new CoincheckController;
+		$rate_arary['LTC'] = $coincheckController->getRate('ltc_jpy');
+		$zaifController = new ZaifController;
+		$rate_arary['MONA'] = $zaifController->getRate('mona_jpy');
 
 		$rate_arary['JPY'] = 1;
 
