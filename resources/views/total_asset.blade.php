@@ -18,16 +18,18 @@
 
 
         <div class="summaries">
-          <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>総資産</span></dt>
-            <dd class="summary__body"><span class="summary__num">{{number_format($total_amount)}} 円</span>
-              {{--<span class="summary__num diff success">+264(+400%)</span>--}}
-            </dd>
-          </dl>
-          <dl class="panel"><dt class="summary__head"><i class="fa fa-film"></i><span>日次損益</span></dt>
-            <dd class="summary__body"><span class="summary__num">{{number_format($daily_gain)}}</span>
-              {{--<span class="summary__num diff danger">-1,000(-100%)</span>--}}
-            </dd>
-          </dl>
+          <a href="/coin_ratio">
+            <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>総資産</span></dt>
+              <dd class="summary__body"><span class="summary__num">{{number_format($total_amount)}} 円</span>
+                {{--<span class="summary__num diff success">+264(+400%)</span>--}}
+              </dd>
+            </dl>
+          </a>
+            <dl class="panel"><dt class="summary__head"><i class="fa fa-film"></i><span>日次損益</span></dt>
+              <dd class="summary__body"><span class="summary__num">{{number_format($daily_gain)}}</span>
+                {{--<span class="summary__num diff danger">-1,000(-100%)</span>--}}
+              </dd>
+            </dl>
         </div>
 
 

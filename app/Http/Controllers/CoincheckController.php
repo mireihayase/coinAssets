@@ -87,7 +87,6 @@ class CoincheckController extends Controller{
 
 
 	public static function storeCoinRate(){
-		$coin_rate_file = base_path() . '/ext/coin_rate.json';
 		$coincheck_coins = config('CoincheckCoins');
 		foreach ($coincheck_coins as $coin_name => $coin_pair){
 			$rate = CoincheckController::getRate($coin_pair);

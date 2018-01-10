@@ -18,16 +18,18 @@
     <h1 class="page-header" style="margin-bottom: 0px;"><i class="fa fa-file-text"></i><span>{{$exchange}}</span></h1>
 
     <div class="summaries">
-      <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>総資産</span></dt>
-        <dd class="summary__body"><span class="summary__num">{{number_format($assets['total'])}}</span>
-          {{--<span class="summary__num diff success">+264(+400%)</span>--}}
-        </dd>
-      </dl>
-      <dl class="panel"><dt class="summary__head"><i class="fa fa-film"></i><span>日次損益</span></dt>
-        <dd class="summary__body"><span class="summary__num">2,450</span>
-          {{--<span class="summary__num diff danger">-1,000(-100%)</span>--}}
-        </dd>
-      </dl>
+      <a href="/coin_ratio">
+        <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>総資産</span></dt>
+          <dd class="summary__body"><span class="summary__num">{{number_format($assets['total'])}}</span>
+            {{--<span class="summary__num diff success">+264(+400%)</span>--}}
+          </dd>
+        </dl>
+        <dl class="panel"><dt class="summary__head"><i class="fa fa-film"></i><span>日次損益</span></dt>
+          <dd class="summary__body"><span class="summary__num">2,450</span>
+            {{--<span class="summary__num diff danger">-1,000(-100%)</span>--}}
+          </dd>
+        </dl>
+      </a>
     </div>
     <div class="summaries">
       <table class="table table--striped">

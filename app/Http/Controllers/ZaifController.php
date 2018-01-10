@@ -79,7 +79,7 @@ class ZaifController extends Controller{
 		}
 		$rate_arary['JPY'] = 1;
 
-			Redis::set('zaif_rate', json_encode($rate_arary));
+		Redis::set('zaif_rate', json_encode($rate_arary));
 	}
 
 	//残高取得
