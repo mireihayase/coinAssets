@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\DailyAssetHistory;
 
 class ApiController extends Controller{
 
@@ -123,5 +124,18 @@ class ApiController extends Controller{
 		$coin_asset['amount'] = $coin_amount;
 
 		return json_encode($coin_asset);
+	}
+
+	public function DailyAssetHistory() {
+		$asset_history_model = new DailyAssetHistory;
+		$daily_asset_histories_array = $asset_history_model::where('user_id', Auth::id())->take(30)->get();
+
+		$asset_array = [];
+		foreach ($daily_asset_histories_array as $asset_history) {
+			$asset_array[$asset_history->date] =  $asset_history->amount;//number_format($asset_history->amount, 2);
+		}
+		ksort($asset_array);
+
+		return $asset_array;
 	}
 }

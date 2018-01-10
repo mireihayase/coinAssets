@@ -97,6 +97,24 @@ class ShowController extends Controller{
 		return view('coin_ratio', $this->data);
 	}
 
+	public function DailyAssetHistory() {
+		$total_amount = 0;
+		$bitflyerController = new BitflyerController;
+		$bitflyer_assets = $bitflyerController->setAssetParams();
+		$total_amount += $bitflyer_assets['total'];
+		$asset_params['bitflyer'] = $bitflyer_assets;
+		$coincheckController = new CoincheckController;
+		$coincheck_assets = $coincheckController->setAssetParams();
+		$total_amount += $coincheck_assets['total'];
+		$asset_params['coincheck'] = $coincheck_assets;
+		$zaifController = new ZaifController;
+		$zaif_assets = $zaifController->setAssetParams();
+		$total_amount += $zaif_assets['total'];
+		$this->data['total_amount'] = $total_amount;
+
+		return view('asset_history', $this->data);
+	}
+
 	public function priceList(){
 		$coin_rate_array = [];
 		$bitflyer_coin_rate = Redis::get('bitflyer_rate');
