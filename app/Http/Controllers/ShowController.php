@@ -121,18 +121,33 @@ class ShowController extends Controller{
 		$bitflyer_coin_rate = (array)json_decode($bitflyer_coin_rate);
 		unset($bitflyer_coin_rate['JPY']);
 		$coin_rate_array['bitflyer'] = $bitflyer_coin_rate;
-
 		$coincheck_coin_rate = Redis::get('coincheck_rate');
 		$coincheck_coin_rate = (array)json_decode($coincheck_coin_rate);
 		unset($coincheck_coin_rate['JPY']);
 		$coin_rate_array['coincheck'] = $coincheck_coin_rate;
-
 		$zaif_coin_rate = Redis::get('zaif_rate');
 		$zaif_coin_rate = (array)json_decode($zaif_coin_rate);
 		unset($zaif_coin_rate['JPY']);
 		$coin_rate_array['zaif'] = $zaif_coin_rate;
-
 		$this->data['coin_rate_array'] = $coin_rate_array;
+
+		$total_amount = 0;
+		$bitflyerController = new BitflyerController;
+		$bitflyer_assets = $bitflyerController->setAssetParams();
+		$total_amount += $bitflyer_assets['total'];
+		$asset_params['bitflyer'] = $bitflyer_assets;
+		$coincheckController = new CoincheckController;
+		$coincheck_assets = $coincheckController->setAssetParams();
+		$total_amount += $coincheck_assets['total'];
+		$asset_params['coincheck'] = $coincheck_assets;
+		$zaifController = new ZaifController;
+		$zaif_assets = $zaifController->setAssetParams();
+		$total_amount += $zaif_assets['total'];
+		$this->data['total_amount'] = $total_amount;
+
+		$yesterday_amount = DailyAssetHistory::where('user_id', Auth::id())->whereDate('date',  date('Y-m-d', strtotime('-2 day', time())))->first();
+		$daily_gain = $total_amount - $yesterday_amount->amount;
+		$this->data['daily_gain'] = $daily_gain;
 
 		return view('price_list', $this->data);
 	}
