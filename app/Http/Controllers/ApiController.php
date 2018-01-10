@@ -132,7 +132,8 @@ class ApiController extends Controller{
 
 		$asset_array = [];
 		foreach ($daily_asset_histories_array as $asset_history) {
-			$asset_array[$asset_history->date] =  $asset_history->amount;//number_format($asset_history->amount, 2);
+			$date = date('n/j', strtotime($asset_history->date));
+			$asset_array[$date] =  $asset_history->amount;//number_format($asset_history->amount, 2);
 		}
 		ksort($asset_array);
 
