@@ -84,6 +84,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/api/coin_ratio', 'ApiController@coinRatio');
 	Route::get('/api/daily_asset_history', 'ApiController@dailyAssetHistory');
 
+	Route::get('/api/coin_rate_history/{exchange}/{coin_name}', 'ApiController@coinRateHistory');
 	Route::get('/price_list', 'ShowController@priceList');
 
 });
