@@ -2,8 +2,57 @@
 <html>
 
   @include('include/head')
+  <script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>
+  <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 
+  <style>
 
+    .table-header-fixed {
+      min-width: calc(19em + 17px); /* カラム最小幅合計値+スクロールバーの幅+1px（誤差吸収用） */
+      height: 320px;
+      overflow-y: scroll;
+      border-collapse: collapse;
+    }
+
+    .table-header-fixed thead,
+    .table-header-fixed tbody,
+    .table-header-fixed tr,
+    .table-header-fixed th,
+    .table-header-fixed td {
+      display: block;
+    }
+
+    .table-header-fixed tbody {
+      width: 100%;
+      height: calc(100% - 2em); /* 100% - ヘッダの高さ */
+      overflow-y: scroll;
+    }
+
+    .table-header-fixed tr:after { /* clearfix */
+      content: "";
+      clear: both;
+      display: block;
+    }
+
+    .table-header-fixed th {
+      float: left;
+      height: 35px;
+      overflow: hidden;
+      padding: 0 calc((100% - 14em)/6); /* (100% - カラム最小幅合計値)/(カラム数*2) */
+    }
+    .table-header-fixed td {
+      float: left;
+      height: 35px;
+      overflow: hidden;
+      padding: 0 calc((100% - 14em)/6); /* (100% - カラム最小幅合計値)/(カラム数*2) */
+      box-sizing: content-box;
+    }
+
+    .table-header-fixed th:first-child,
+    .table-header-fixed td:first-child{
+      /*text-align: right;*/
+    }
+  </style>
   <body>
     @include('include/header')
 
@@ -11,58 +60,54 @@
 
     <div class="main-contents">
       <div class="main-contents__body">
-        <ul class="breadcrumbs">
-          <li class="breadcrumbs__list"><a href="">Home</a></li>
-        </ul>
-        <h1 class="page-header" style="margin-bottom: 0px;"><i class="fa fa-file-text"></i><span>Top</span></h1>
 
+        <dl class="panel"><dt class="summary__head"><span>価格一覧</span></dt>
 
-        <div class="summaries">
-          <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>総資産</span></dt>
-            <dd class="summary__body"><span class="summary__num">{{number_format($total_amount)}} 円</span>
-              {{--<span class="summary__num diff success">+264(+400%)</span>--}}
-            </dd>
-          </dl>
-          <dl class="panel"><dt class="summary__head"><i class="fa fa-film"></i><span>日次損益</span></dt>
-            <dd class="summary__body"><span class="summary__num {{getPlusOrMinusClass($daily_gain)}}">{{number_format($daily_gain)}} 円</span>
-              {{--<span class="summary__num diff danger">-1,000(-100%)</span>--}}
-            </dd>
-          </dl>
-        </div>
-
-
-        <p class="weight--bold">価格一覧</p>
-          <div class="summaries">
-            <table class="table table--striped">
-              <thead>
+          {{--<dl class="summaries">--}}
+            {{--<table class="table table--striped">--}}
+            <table class="table table--striped table-header-fixed">
+              <thead class="table_head">
                 <tr>
-                  <th>銘柄</th>
-                  <th>JPY</th>
-                  <th>昨日比</th>
+                  <th>　銘柄</th>
+                  <th>　JPY換算</th>
+                  <th style="float: right;">昨日比</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody  class ="table_scroll">
+              {{--<tbody style="overflow-x: hidden; overflow-y: scroll">--}}
                 @foreach($coin_rate_array as $exchange => $rate_array)
                   <tr style="background-color: gray; color:white;"><td>{{$exchange}}</td><td></td><td></td><tr>
                   @foreach($rate_array as $name => $rate)
-                    <tr>
-                      <td>{{$name}}<img src="../coin_img/{{$name}}.svg" style="width: 30px; height: 30px"></td>
-                      <td id="{{$exchange.'_'.$exchange}}">{{number_format($rate, 2)}}</td>
+                    <tr id="{{$exchange . '_'. $name}}" class="coin_rate">
+                      <td>{{$name}}
+                        <img src="../coin_img/{{$name}}.svg" style="width: 30px; height: 30px">
+                      </td>
+                      <td id="{{$exchange.'_'.$name. '_price'}}">{{number_format($rate, 2)}}</td>
                       <?php
 						$yesterday_rate = $yesterday_rate_array[$exchange][$name];
 						$class = getPlusOrMinusClass($yesterday_rate);
                         ?>
-                      <td class="summary__num diff {{$class}}">{{$yesterday_rate}}%</td>
+                      <td class="summary__num diff {{$class}}" style="float: right;">{{$yesterday_rate}}%</td>
                     </tr>
                   @endforeach
                 @endforeach
               </tbody>
             </table>
+            <br />
+            <dd class="summary__body">
+              <div id="canvas-holder" style="width:100%">
+                <canvas id="chart-area" />
+              </div>
+            </dd>
+          </dl>
+
           </div>
         </div>
       </div>
+
     <script src="./bower_components/jquery/dist/jquery.min.js"></script>
     <script src="./bower_components/adminize/js/adminize.min.js"></script>
+    <script src="../js/rate_history.js"></script>
   </body>
 
 </html>
