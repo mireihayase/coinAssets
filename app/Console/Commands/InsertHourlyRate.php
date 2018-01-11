@@ -35,6 +35,7 @@ class InsertHourlyRate extends Command {
      *
      * @return mixed
      */
+    //TODO 1コインにつき、24レコード以上は削除する
     public function handle() {
 		$bitflyer_coin_rate = Redis::get('bitflyer_rate');
 		$bitflyer_coin_rate = (array)json_decode($bitflyer_coin_rate);

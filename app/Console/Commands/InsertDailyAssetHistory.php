@@ -55,7 +55,7 @@ class InsertDailyAssetHistory extends Command {
 			$total_amount = $bitflyer_assets['total'] + $coincheck_assets['total'] + $zaif_assets['total'];
 			$asset_history_model->user_id = $user_id;
 			$asset_history_model->amount = round($total_amount);
-			$asset_history_model->date =  date('Y-m-d', strtotime('-7 day', time()));
+			$asset_history_model->date =  date('Y-m-d', strtotime('-2 day', time()));
 			$asset_history_model->save();
 		}
     }

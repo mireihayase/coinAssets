@@ -267,7 +267,7 @@ class BitflyerController extends Controller{
 		return $response;
 	}
 
-	public function setAssetParams($user_id = null){
+	public function setAssetParams($user_id = null) {
 		$response = self::getBalance($user_id);
 		$coin_rate = Redis::get('bitflyer_rate');
 		$coin_rate = (array)json_decode($coin_rate);
