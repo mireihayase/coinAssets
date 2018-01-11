@@ -58,7 +58,7 @@
 <script src="./bower_components/jquery/dist/jquery.min.js"></script>
 <script src="./bower_components/adminize/js/adminize.min.js"></script>
 
-<script src="../js/coin_rate_chart.js"></script>
+<script src="../js/coin_ratio.js"></script>
 </body>
 
 </html>
