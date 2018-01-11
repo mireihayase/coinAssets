@@ -14,3 +14,10 @@ if(!function_exists('num2per')) {
 		}
 	}
 }
+
+if(!function_exists('getPlusOrMinusClass')) {
+	function getPlusOrMinusClass($number) {
+		$class = $number >= 0 ? 'success' : 'danger';
+		return $class;
+	}
+}

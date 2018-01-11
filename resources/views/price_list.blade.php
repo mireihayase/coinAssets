@@ -24,7 +24,7 @@
             </dd>
           </dl>
           <dl class="panel"><dt class="summary__head"><i class="fa fa-film"></i><span>日次損益</span></dt>
-            <dd class="summary__body"><span class="summary__num">{{number_format($daily_gain)}} 円</span>
+            <dd class="summary__body"><span class="summary__num {{getPlusOrMinusClass($daily_gain)}}">{{number_format($daily_gain)}} 円</span>
               {{--<span class="summary__num diff danger">-1,000(-100%)</span>--}}
             </dd>
           </dl>
@@ -47,8 +47,12 @@
                   @foreach($rate_array as $name => $rate)
                     <tr>
                       <td>{{$name}}<img src="../coin_img/{{$name}}.svg" style="width: 30px; height: 30px"></td>
-                      <td>{{number_format($rate, 2)}}</td>
-                      <td class="summary__num diff success">+10.00%</td>
+                      <td id="{{$exchange.'_'.$exchange}}">{{number_format($rate, 2)}}</td>
+                      <?php
+						$yesterday_rate = $yesterday_rate_array[$exchange][$name];
+						$class = getPlusOrMinusClass($yesterday_rate);
+                        ?>
+                      <td class="summary__num diff {{$class}}">{{$yesterday_rate}}%</td>
                     </tr>
                   @endforeach
                 @endforeach

@@ -11,6 +11,7 @@ use App\Http\Controllers\ZaifController;
 use Illuminate\Support\Facades\Redis;
 use App\Api;
 use App\DailyAssetHistory;
+use App\DailyRateHistory;
 
 
 class ShowController extends Controller{
@@ -148,6 +149,31 @@ class ShowController extends Controller{
 		$yesterday_amount = DailyAssetHistory::where('user_id', Auth::id())->whereDate('date',  date('Y-m-d', strtotime('-2 day', time())))->first();
 		$daily_gain = $total_amount - $yesterday_amount->amount;
 		$this->data['daily_gain'] = $daily_gain;
+
+		$daily_rate_history_model = new DailyRateHistory;
+		$bitflyer_rate_histories = $daily_rate_history_model::where('exchange_id', config('exchanges.bitflyer'))->where('date', date('Y-m-d', strtotime('-1 day', time())))->get();
+		$yesterday_rate_array = [];
+		foreach ($bitflyer_rate_histories as $v) {
+			$yesterday_price = $v->rate;
+			$current_price = $bitflyer_coin_rate[$v->coin_name];
+			$yesterday_rate = num2per($yesterday_price, $current_price, 2) - (float)100.0;
+			$yesterday_rate_array['bitflyer'][$v->coin_name] = number_format($yesterday_rate, 2);
+		}
+		$coincheck_rate_histories = $daily_rate_history_model::where('exchange_id', config('exchanges.coincheck'))->where('date', date('Y-m-d', strtotime('-1 day', time())))->get();
+		foreach ($coincheck_rate_histories as $v) {
+			$yesterday_price = $v->rate;
+			$current_price = $coincheck_coin_rate[$v->coin_name];
+			$yesterday_rate = num2per($yesterday_price, $current_price, 2) - (float)100.0;
+			$yesterday_rate_array['coincheck'][$v->coin_name] = number_format($yesterday_rate, 2);
+		}
+		$zaif_rate_histories = $daily_rate_history_model::where('exchange_id', config('exchanges.zaif'))->where('date', date('Y-m-d', strtotime('-1 day', time())))->get();
+		foreach ($zaif_rate_histories as $v) {
+			$yesterday_price = $v->rate;
+			$current_price = $zaif_coin_rate[$v->coin_name];
+			$yesterday_rate = num2per($yesterday_price, $current_price, 2) - (float)100.0;
+			$yesterday_rate_array['zaif'][$v->coin_name] = number_format($yesterday_rate, 2);
+		}
+		$this->data['yesterday_rate_array'] = $yesterday_rate_array;
 
 		return view('price_list', $this->data);
 	}
