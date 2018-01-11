@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\DailyAssetHistory;
+use App\DailyRateHistory;
 
 class ApiController extends Controller{
 
@@ -144,6 +145,25 @@ class ApiController extends Controller{
 		return $asset_histories_array;
 	}
 
-		return $asset_array;
+	public function coinRateHistory($exchange, $coin_name) {
+		$exchange_id = config('exchanges.'.$exchange);
+		$daily_rate_history_model = new DailyRateHistory;
+		$daily_rate_history = $daily_rate_history_model::where('exchange_id', $exchange_id)
+			->where('coin_name', $coin_name)
+			->whereBetween('date', [time(), date('Y-m-d', strtotime('-30 day', time())) ])
+			->get();
+
+		$rate_array = [];
+		foreach ($daily_rate_history as $v) {
+			$rate_array[$v->date] = $v->rate;
+		}
+		ksort($rate_array);
+		$rate_history_array = [];
+		foreach ($rate_array as $date => $v) {
+			$date = date('n/j', strtotime($date));
+			$rate_history_array[$date] = $v;
+		}
+
+		return json_encode($rate_history_array);
 	}
 }
