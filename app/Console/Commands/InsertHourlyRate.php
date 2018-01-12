@@ -35,7 +35,6 @@ class InsertHourlyRate extends Command {
      *
      * @return mixed
      */
-    //TODO 1コインにつき、24レコード以上は削除する
     public function handle() {
 		$bitflyer_coin_rate = Redis::get('bitflyer_rate');
 		$bitflyer_coin_rate = (array)json_decode($bitflyer_coin_rate);
@@ -73,5 +72,10 @@ class InsertHourlyRate extends Command {
 			$hourly_rate_history->date = date('Y-m-d H:00:00');
 			$hourly_rate_history->save();
 		}
+
+		$hourly_rate_history_model = new HourlyRateHistory;
+		$old_rate_history_array = $hourly_rate_history_model::where('date', '<', date('Y-m-d H:00:00', strtotime('-1 day', time())) )
+			->forceDelete();
+
     }
 }
