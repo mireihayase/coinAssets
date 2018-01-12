@@ -29,7 +29,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('getCoinRate')
-			 ->everyFiveMinutes();
+			 ->everyMinute()
+			 ->withoutOverlapping()
+			 ->evenInMaintenanceMode();
 		$schedule->command('InsertDailyAssetHistory')
 			->daily();
 		$schedule->command('InsertDailyAssetHistory')
