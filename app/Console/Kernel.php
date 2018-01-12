@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
 			 ->evenInMaintenanceMode();
 		$schedule->command('InsertDailyAssetHistory')
 			->daily();
-		$schedule->command('InsertDailyAssetHistory')
+		$schedule->command('InsertMonthlyAssetHistory')
 			->monthly();
 		$schedule->command('InsertHourlyRate')
 			->hourly();
