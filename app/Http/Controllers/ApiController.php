@@ -25,9 +25,9 @@ class ApiController extends Controller{
 		$asset_params['zaif'] = $zaif_assets;
 
 		$coin_ratio = [];
-		$coin_ratio += config('BitflyerCoins');
-		$coin_ratio += config('CoincheckCoins');
-		$coin_ratio += config('ZaifCoins');
+		$coin_ratio += (array)config('BitflyerCoins');
+		$coin_ratio += (array)config('CoincheckCoins');
+		$coin_ratio += (array)config('ZaifCoins');
 		$coin_ratio['JPY'] = 0;
 		foreach ($coin_ratio as $coin_name => $v) {
 			$coin_ratio[$coin_name] = 0;
