@@ -76,9 +76,9 @@ class ShowController extends Controller{
 		$asset_params['zaif'] = $zaif_assets;
 
 		$coin_amount = [];
-		$coin_amount += config('BitflyerCoins');
-		$coin_amount += config('CoincheckCoins');
-		$coin_amount += config('ZaifCoins');
+		$coin_amount += (array)config('BitflyerCoins');
+		$coin_amount += (array)config('CoincheckCoins');
+		$coin_amount += (array)config('ZaifCoins');
 		$coin_amount['JPY'] = 0;
 		foreach ($coin_amount as $coin_name => $v) {
 			$coin_amount[$coin_name] = [];
