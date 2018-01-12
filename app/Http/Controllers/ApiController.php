@@ -150,7 +150,7 @@ class ApiController extends Controller{
 		$daily_rate_history_model = new DailyRateHistory;
 		$daily_rate_history = $daily_rate_history_model::where('exchange_id', $exchange_id)
 			->where('coin_name', $coin_name)
-			->whereBetween('date', [time(), date('Y-m-d', strtotime('-30 day', time())) ])
+			->where('date', '>', date('Y-m-d', strtotime('-30 day', time())) )
 			->get();
 
 		$rate_array = [];
