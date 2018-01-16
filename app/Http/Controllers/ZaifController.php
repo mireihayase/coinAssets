@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Api;
 use Illuminate\Support\Facades\Redis;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class ZaifController extends Controller{
 	public $api_key = '';
@@ -68,6 +70,12 @@ class ZaifController extends Controller{
 		$response = self::getRequest($url);
 		$response_aray = json_decode($response, true);
 
+		if(empty($response_aray['last_price'])) {
+			$exchange_log = new Logger('zaif');
+			$exchange_log->pushHandler(new StreamHandler(storage_path().'/logs/exchange.log', Logger::INFO));
+			$exchange_log->addInfo(__LINE__ . " : " . __FUNCTION__ .  " : user_id ". Auth::id() . " : " .  json_encode($response));
+		}
+
 		return $response_aray['last_price'];
 	}
 
@@ -94,9 +102,15 @@ class ZaifController extends Controller{
 		$postdata_query = http_build_query( $postdata );
 		$sign = hash_hmac( 'sha512', $postdata_query, $this->api_secret);
 		$header = array( "Sign: {$sign}", "Key: {$this->api_key}", );
-		$data = self::curlPost( self::TRADE_BASE_URL, $header, $postdata_query);
+		$response = self::curlPost( self::TRADE_BASE_URL, $header, $postdata_query);
 
-		return $data;
+		if(empty($response) || !empty($response['error'])) {
+			$exchange_log = new Logger('zaif');
+			$exchange_log->pushHandler(new StreamHandler(storage_path().'/logs/exchange.log', Logger::INFO));
+			$exchange_log->addInfo(__LINE__ . " : " . __FUNCTION__ .  " : user_id ". Auth::id() . " : " .  json_encode($response));
+		}
+
+		return $response;
 	}
 
 	public function setAssetParams($user_id = null){
@@ -119,7 +133,6 @@ class ZaifController extends Controller{
 			}
 			$asset_data['total'] = $total;
 		}else{
-			//TODO log追加
 			$asset_data['total'] = 0;
 		}
 
@@ -137,9 +150,15 @@ class ZaifController extends Controller{
 		$postdata_query = http_build_query( $postdata );
 		$sign = hash_hmac( 'sha512', $postdata_query, $this->api_secret);
 		$header = array( "Sign: {$sign}", "Key: {$this->api_key}", );
-		$data = self::curlPost( self::TRADE_BASE_URL, $header, $postdata_query );
+		$response = self::curlPost( self::TRADE_BASE_URL, $header, $postdata_query );
 
-		return $data;
+		if(empty($response) || !empty($response['error'])) {
+			$exchange_log = new Logger('zaif');
+			$exchange_log->pushHandler(new StreamHandler(storage_path().'/logs/exchange.log', Logger::INFO));
+			$exchange_log->addInfo(__LINE__ . " : " . __FUNCTION__ .  " : user_id ". Auth::id() . " : " .  json_encode($response));
+		}
+
+		return $response;
 	}
 
 	public function dispHistory(){

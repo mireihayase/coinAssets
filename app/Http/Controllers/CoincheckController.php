@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Api;
 use Illuminate\Support\Facades\Redis;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class CoincheckController extends Controller{
 	public $data;
@@ -82,9 +84,14 @@ class CoincheckController extends Controller{
 		$response = self::getRequest($url);
 		$response_aray = json_decode($response, true);
 
+		if(empty($response_aray['rate'])) {
+			$exchange_log = new Logger('coincheck');
+			$exchange_log->pushHandler(new StreamHandler(storage_path().'/logs/exchange.log', Logger::INFO));
+			$exchange_log->addInfo(__LINE__ . " : " . __FUNCTION__ .  " : user_id ". Auth::id() . " : " .  json_encode($response));
+		}
+
 		return $response_aray['rate'];
 	}
-
 
 	public static function storeCoinRate(){
 		$coincheck_coins = config('CoincheckCoins');
@@ -161,6 +168,11 @@ class CoincheckController extends Controller{
 		self::setParameter($user_id);
 		$header = self::generateHeader($path);
 		$response = self::curlExec($url, $header);
+		if(empty($response['success']) || !$response['success']) {
+			$exchange_log = new Logger('coincheck');
+			$exchange_log->pushHandler(new StreamHandler(storage_path().'/logs/exchange.log', Logger::INFO));
+			$exchange_log->addInfo(__LINE__ . " : " . __FUNCTION__ .  " : user_id ". Auth::id() . " : " .  json_encode($response));
+		}
 
 		return $response;
 	}
@@ -185,7 +197,6 @@ class CoincheckController extends Controller{
 			}
 			$asset_data['total'] = $total;
 		}else{
-			//TODO log追加
 			$asset_data['total'] = 0;
 		}
 
@@ -199,6 +210,12 @@ class CoincheckController extends Controller{
 		self::setParameter();
 		$header = self::generateHeader($path);
 		$response = self::curlExec($url, $header);
+
+		if(empty($response['success']) || !$response['success']) {
+			$exchange_log = new Logger('coincheck');
+			$exchange_log->pushHandler(new StreamHandler(storage_path().'/logs/exchange.log', Logger::INFO));
+			$exchange_log->addInfo(__LINE__ . " : " . __FUNCTION__ .  " : user_id ". Auth::id() . " : " .  json_encode($response));
+		}
 
 		return $response;
 	}

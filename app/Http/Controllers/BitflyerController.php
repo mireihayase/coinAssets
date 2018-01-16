@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Api;
 use Illuminate\Support\Facades\Redis;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 
 class BitflyerController extends Controller{
@@ -110,6 +112,13 @@ class BitflyerController extends Controller{
 		$header = null;
 		$response = self::getRequest($url, $header, $query);
 
+		$response_class = json_decode($response);
+		if(empty($response_class->product_code)) {
+			$exchange_log = new Logger('bitflyer');
+			$exchange_log->pushHandler(new StreamHandler(storage_path().'/logs/exchange.log', Logger::INFO));
+			$exchange_log->addInfo(__LINE__ . " : " . __FUNCTION__  . " : " .  json_encode($response));
+		}
+
 		return $response;
 	}
 
@@ -198,17 +207,28 @@ class BitflyerController extends Controller{
 		$header = self::generateHeader($path);
 		$response = self::curlExec($url, $header);
 
+		if(empty($response) || !empty($response['error_message'])) {
+			$exchange_log = new Logger('bitflyer');
+			$exchange_log->pushHandler(new StreamHandler(storage_path().'/logs/exchange.log', Logger::INFO));
+			$exchange_log->addInfo(__LINE__ . " : " . __FUNCTION__ .  " : user_id ". Auth::id() . " : " .  json_encode($response));
+		}
+
 		return $response;
 	}
 
-	//
+	//取引履歴取得
 	public function getHistory(){
-//		$path = '/v1/me/gethistogethistoryry';
 		$path = '/v1/me/getchildorders';
 		$url = self::API_URL . $path;
 		self::setParameter();
 		$header = self::generateHeader($path);
 		$response = self::curlExec($url, $header);
+
+		if(empty($response) || !empty($response['error_message'])) {
+			$exchange_log = new Logger('bitflyer');
+			$exchange_log->pushHandler(new StreamHandler(storage_path().'/logs/exchange.log', Logger::INFO));
+			$exchange_log->addInfo(__LINE__ . " : " . __FUNCTION__ .  " : user_id ". Auth::id() . " : " .  json_encode($response));
+		}
 
 		return $response;
 	}
@@ -288,7 +308,6 @@ class BitflyerController extends Controller{
 			}
 			$asset_data['total'] = $total;
 		}else{
-			//TODO log追加
 			$asset_data['total'] = 0;
 		}
 
