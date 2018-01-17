@@ -36,19 +36,27 @@
         </tr>
         </thead>
         <tbody>
-          @foreach($assets['coin'] as $v)
-          <tr>
-            <td>{{$v['coin_name']}}</td>
-            <td>{{number_format($v['amount'], 2)}}</td>
-            <td>
-              @if(!empty($v['convert_JPY']))
-                {{number_format($v['convert_JPY'], 2)}}
-              @else
-                0
-              @endif
-            </td>
-          </tr>
-        @endforeach
+          @if(!empty($assets['coin']))
+            @foreach($assets['coin'] as $v)
+            <tr>
+              <td>{{$v['coin_name']}}</td>
+              <td>{{number_format($v['amount'], 2)}}</td>
+              <td>
+                @if(!empty($v['convert_JPY']))
+                  {{number_format($v['convert_JPY'], 2)}}
+                @else
+                  0
+                @endif
+              </td>
+            </tr>
+            @endforeach
+          @else
+            <tr>
+              <td>所有コインなし</td>
+              <td></td>
+              <td></td>
+            </tr>
+          @endif
         </tbody>
       </table>
     </div>

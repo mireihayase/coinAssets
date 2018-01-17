@@ -47,19 +47,27 @@
           <tbody>
             @foreach($all_assets as $exchange => $assets)
               <tr style="background-color: gray; color:white;"><td>{{$exchange}}</td><td></td><td>{{number_format($assets['total'])}}</td></tr>
-              @foreach($assets['coin'] as $v)
+              @if(!empty($assets['coin']))
+                @foreach($assets['coin'] as $v)
+                  <tr>
+                    <td>{{$v['coin_name']}}</td>
+                    <td>{{number_format($v['amount'], 2)}}</td>
+                    <td>
+                      @if(!empty($v['convert_JPY']))
+                        {{number_format($v['convert_JPY'], 2)}}
+                      @else
+                        0
+                      @endif
+                    </td>
+                  </tr>
+                @endforeach
+              @else
                 <tr>
-                  <td>{{$v['coin_name']}}</td>
-                  <td>{{number_format($v['amount'], 2)}}</td>
-                  <td>
-                    @if(!empty($v['convert_JPY']))
-                      {{number_format($v['convert_JPY'], 2)}}
-                    @else
-                      0
-                    @endif
-                  </td>
+                  <td>所有コインなし</td>
+                  <td></td>
+                  <td></td>
                 </tr>
-              @endforeach
+              @endif
             @endforeach
 
           </tbody>
