@@ -164,8 +164,12 @@ class ZaifController extends Controller{
 	public function dispHistory(){
 		self::setParameter();
 		$response = self::tradeHistory();
-		array_shift($response);
-		$this->data['history'] = $response;
+		if(empty($response) || empty($response['error'])) {
+			array_shift($response);
+			$this->data['history'] = $response;
+		}else{
+			$this->data['history'] = null;
+		}
 
 		return view('zaif_history', $this->data);
 	}

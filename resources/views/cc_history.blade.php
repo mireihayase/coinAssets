@@ -28,15 +28,25 @@
       </tr>
       </thead>
       <tbody>
-      @foreach($history as $v)
-        <tr>
-          <td>{{$v['pair']}}</td>
-          <td>{{$v['side']}}</td>
-          <td>{{$v['funds']['btc']}}</td>
-          <td>{{$v['funds']['jpy']}}</td>
-          <td>{{$v['created_at']}}</td>
-        </tr>
-      @endforeach
+        @if(!empty($history))
+          @foreach($history as $v)
+            <tr>
+              <td>{{$v['pair']}}</td>
+              <td>{{$v['side']}}</td>
+              <td>{{$v['funds']['btc']}}</td>
+              <td>{{$v['funds']['jpy']}}</td>
+              <td>{{$v['created_at']}}</td>
+            </tr>
+          @endforeach
+        @else
+          <tr>
+            <td>取引履歴なし</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        @endif
       </tbody>
     </table>
   </div>

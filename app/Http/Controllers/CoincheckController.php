@@ -223,7 +223,7 @@ class CoincheckController extends Controller{
 	public function dispHistory(){
 		self::setParameter();
 		$response = self::getTransaction();
-		$this->data['history'] = $response['transactions'];
+		$this->data['history'] = !empty($response['transactions']) ? $response['transactions'] : null;
 
 		return view('cc_history', $this->data);
 	}

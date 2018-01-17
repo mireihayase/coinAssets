@@ -317,7 +317,7 @@ class BitflyerController extends Controller{
 	public function dispHistory(){
 		self::setParameter();
 		$response = self::getHistory();
-		$this->data['history'] = $response;
+		$this->data['history'] = !empty($response['error_message']) ? null : $response;
 
 		return view('btf_history', $this->data);
 	}

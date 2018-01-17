@@ -28,17 +28,27 @@
       </tr>
       </thead>
       <tbody>
-      @foreach($history as $transaction)
-        @foreach($transaction as $v)
+        @if(!empty($history))
+          @foreach($history as $transaction)
+            @foreach($transaction as $v)
+              <tr>
+                <td>{{$v['currency_pair']}}</td>
+                <td>{{$v['your_action']}}</td>
+                <td>{{$v['amount']}}</td>
+                <td>{{$v['price']}}</td>
+                <td>{{date( "Y-m-d H:i:s", $v['timestamp'])}}</td>
+              </tr>
+            @endforeach
+          @endforeach
+        @else
           <tr>
-            <td>{{$v['currency_pair']}}</td>
-            <td>{{$v['your_action']}}</td>
-            <td>{{$v['amount']}}</td>
-            <td>{{$v['price']}}</td>
-            <td>{{date( "Y-m-d H:i:s", $v['timestamp'])}}</td>
+            <td>取引履歴なし</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
-        @endforeach
-      @endforeach
+        @endif
       </tbody>
     </table>
   </div>

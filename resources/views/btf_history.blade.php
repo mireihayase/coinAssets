@@ -28,15 +28,25 @@
       </tr>
       </thead>
       <tbody>
-      @foreach($history as $v)
-        <tr>
-          <td>{{$v['product_code']}}</td>
-          <td>{{$v['side']}}</td>
-          <td>{{$v['size']}}</td>
-          <td>{{$v['price']}}</td>
-          <td>{{$v['child_order_date']}}</td>
-        </tr>
-      @endforeach
+        @if(!empty($history))
+          @foreach($history as $v)
+            <tr>
+              <td>{{$v['product_code']}}</td>
+              <td>{{$v['side']}}</td>
+              <td>{{$v['size']}}</td>
+              <td>{{$v['price']}}</td>
+              <td>{{$v['child_order_date']}}</td>
+            </tr>
+          @endforeach
+        @else
+          <tr>
+            <td>取引履歴なし</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        @endif
       </tbody>
     </table>
   </div>
