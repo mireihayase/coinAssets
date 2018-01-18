@@ -34,9 +34,11 @@ class ApiController extends Controller{
 		}
 
 		foreach ($asset_params as $exchange => $coin_info) {
-			foreach($coin_info['coin'] as $coin) {
-				$ratio = num2per($coin['convert_JPY'], $total_amount);
-				$coin_ratio[$coin['coin_name']] += $ratio;
+			if(!empty($coin_info['coin'])) {
+				foreach ($coin_info['coin'] as $coin) {
+					$ratio = num2per($coin['convert_JPY'], $total_amount);
+					$coin_ratio[$coin['coin_name']] += $ratio;
+				}
 			}
 		}
 

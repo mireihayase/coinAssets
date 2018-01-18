@@ -86,9 +86,11 @@ class ShowController extends Controller{
 			$coin_amount[$coin_name]['amount'] = 0;
 		}
 		foreach ($asset_params as $exchange => $coin_info) {
-			foreach ($coin_info['coin'] as $coin) {
-				$coin_amount[$coin['coin_name']]['convert_JPY'] += $coin['convert_JPY'];
-				$coin_amount[$coin['coin_name']]['amount'] += $coin['amount'];
+			if(!empty($coin_info['coin'])) {
+				foreach ($coin_info['coin'] as $coin) {
+					$coin_amount[$coin['coin_name']]['convert_JPY'] += $coin['convert_JPY'];
+					$coin_amount[$coin['coin_name']]['amount'] += $coin['amount'];
+				}
 			}
 		}
 
