@@ -46,8 +46,10 @@ class ApiController extends Controller{
 		arsort($coin_ratio);
 		$coin_ratio = array_slice($coin_ratio, 0, 5);
 		$sum = array_sum($coin_ratio);
-		$others = 100 - $sum;
-		$coin_ratio['others'] = $others;
+		if($sum < 100 || count($coin_ratio) < 5) {
+			$others = 100 - $sum;
+			$coin_ratio['others'] = $others;
+		}
 
 		return json_encode($coin_ratio);
 	}
