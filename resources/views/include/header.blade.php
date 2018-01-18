@@ -7,7 +7,7 @@
         <div class="user-avatar" style="background-color: black; color: white;">
             <form action="/logout" method="post">
                 {{ csrf_field() }}
-                <input type="submit" value="Log out"  style="background-color: gray; color: white; width: 70px; height: 40px;">
+                <input type="submit" value="Log out"  style="background-color: gray; color: white; width: 80px; height: 40px;">
             </form>
         </div>
         {{--<div class="user-menu"><i class="caret"><i class="caret-outer"></i><i class="caret-inner"></i></i>--}}

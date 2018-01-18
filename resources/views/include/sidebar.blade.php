@@ -7,7 +7,7 @@
 <div class="side-bar">
     <div class="side-bar__header">
         <div class="site-name">
-            <a href="./"><img src="http://www.gravatar.com/avatar/b58f6ebea2155370e2daf60c369616b1" /><span class="with-logo">CoinForward</span></a>
+            <a href="/"><span class="with-logo">CoinForward</span></a>
         </div>
     </div>
     <div class="scroll-wrap">
