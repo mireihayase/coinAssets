@@ -50,7 +50,7 @@ class ShowController extends Controller{
 		$asset_params['zaif'] = $zaif_assets;
 
 		$yesterday_amount = DailyAssetHistory::where('user_id', Auth::id())->whereDate('date',  date('Y-m-d', strtotime('-2 day', time())))->first();
-		$daily_gain = $total_amount - $yesterday_amount->amount;
+		$daily_gain = !empty($yesterday_amount) ? $total_amount - $yesterday_amount->amount : 0;
 
 		$this->data['daily_gain'] = $daily_gain;
 		$this->data['all_assets'] = $asset_params;
