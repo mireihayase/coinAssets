@@ -17,7 +17,7 @@ class CreateApisTable extends Migration{
 			$table->string('user_id');
 			$table->string('exchange_id');
 			$table->string('api_key');
-			$table->string('api_secret');
+			$table->string('api_secret', 300);
 			$table->softDeletes();
 			$table->timestamps();
 		});

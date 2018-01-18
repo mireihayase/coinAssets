@@ -30,7 +30,7 @@ class ZaifController extends Controller{
 		$api_model = new Api;
 		$api = $api_model::where('user_id', $user_id)->where('exchange_id', $exchange_id)->first();
 		$this->api_key = !empty($api) ? $api->api_key : '';
-		$this->api_secret = !empty($api) ? $api->api_secret : '';
+		$this->api_secret = !empty($api) ? decrypt($api->api_secret) : '';
 	}
 
 	public function createApi(){

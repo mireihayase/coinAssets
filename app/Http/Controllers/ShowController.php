@@ -218,7 +218,7 @@ class ShowController extends Controller{
 		}
 		$api_model->api_key = $request->input('api_key');
 		//TODO hash化する
-		$api_model->api_secret = $request->input('api_secret');
+		$api_model->api_secret = encrypt($request->input('api_secret'));
 		$api_model->user_id = Auth::id();
 		$api_model->exchange_id = $request->input('exchange_id');
 		$api_model->save();
