@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Redis;
 use App\Api;
 use App\DailyAssetHistory;
 use App\DailyRateHistory;
+use function Psy\debug;
 
 
 class ShowController extends Controller{
@@ -149,7 +150,7 @@ class ShowController extends Controller{
 		$this->data['total_amount'] = $total_amount;
 
 		$yesterday_amount = DailyAssetHistory::where('user_id', Auth::id())->whereDate('date',  date('Y-m-d', strtotime('-2 day', time())))->first();
-		$daily_gain = $total_amount - $yesterday_amount->amount;
+		$daily_gain = !empty($yesterday_amount) ? $total_amount - $yesterday_amount->amount : 0;
 		$this->data['daily_gain'] = $daily_gain;
 
 		$daily_rate_history_model = new DailyRateHistory;
