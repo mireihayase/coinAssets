@@ -2,13 +2,10 @@
 <html>
 
 @include('include/head')
-<script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>
+{{--<script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>--}}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
-
-{{--<script src="../js/coin_rate_chart.js"></script>--}}
-
 <body>
 @include('include/header')
 
