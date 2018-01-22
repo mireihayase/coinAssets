@@ -6,8 +6,25 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\DailyAssetHistory;
 use App\DailyRateHistory;
+use App\HourlyRateHistory;
 
 class ApiController extends Controller{
+
+	public function getController($exchange){
+		switch ($exchange){
+			case 'bitflyer':
+				$controller = new BitflyerController;
+				break;
+			case 'coincheck':
+				$controller = new CoincheckController;
+				break;
+			case 'zaif':
+				$controller = new ZaifController;
+				break;
+		}
+
+		return $controller;
+	}
 
 	public function coinRatio(){
 		$total_amount = 0;
@@ -149,7 +166,11 @@ class ApiController extends Controller{
 		return $asset_histories_array;
 	}
 
-	public function coinRateHistory($exchange, $coin_name) {
+	public function coinPrice($exchange, $coin_name) {
+
+	}
+
+	public function coinDailyRateHistory($exchange, $coin_name) {
 		$exchange_id = config('exchanges.'.$exchange);
 		$daily_rate_history_model = new DailyRateHistory;
 		$daily_rate_history = $daily_rate_history_model::where('exchange_id', $exchange_id)
@@ -165,6 +186,30 @@ class ApiController extends Controller{
 		$rate_history_array = [];
 		foreach ($rate_array as $date => $v) {
 			$date = date('n/j', strtotime($date));
+			$rate_history_array[$date] = $v;
+		}
+
+		return json_encode($rate_history_array);
+	}
+
+
+	public function coinHourlyRateHistory($exchange, $coin_name) {
+		$exchange_id = config('exchanges.'.$exchange);
+		$hourly_rate_history_model = new HourlyRateHistory;
+		$hourly_rate_history = $hourly_rate_history_model::where('exchange_id', $exchange_id)
+			->where('coin_name', $coin_name)
+			->where('date', '>', date('Y-m-d', strtotime('-24 hour', time())) )
+			->get();
+
+		$rate_array = [];
+		foreach ($hourly_rate_history as $v) {
+			$rate_array[$v->date] = $v->rate;
+		}
+		ksort($rate_array);
+		$rate_history_array = [];
+
+		foreach ($rate_array as $date => $v) {
+			$date = date('H:00', strtotime($date));
 			$rate_history_array[$date] = $v;
 		}
 

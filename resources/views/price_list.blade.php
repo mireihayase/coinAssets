@@ -95,6 +95,11 @@
             </table>
             <br />
             <dd class="summary__body">
+              <div style="float: right;">
+                <button class="term" id="hourly" style="border-radius: 3px;" >hourly</button>
+                <button class="term" id="daily" style="border-radius: 3px;">daily</button>
+              </div>
+              <div style="display: none" class="" id="set_terms"></div>
               <div id="canvas-holder" style="width:100%">
                 <canvas id="chart-area" />
               </div>

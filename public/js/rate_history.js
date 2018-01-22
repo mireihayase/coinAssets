@@ -1,15 +1,26 @@
-$('.coin_rate').click(function(){
+$('.coin_rate').click(function() {
     var id = $(this).attr("id");
+    $('#set_terms').addClass(id);
     var id_array = id.split("_");
     var exchange_name = id_array[0];
     var coin_name = id_array[1];
-    setCoinRateChart(exchange_name, coin_name);
+    setCoinRateChart(exchange_name, coin_name, 'hourly');
 });
 
-function setCoinRateChart(exchange_name, coin_name) {
+$(".term").click(function() {
+    var id = $('#set_terms').attr('class');
+    var term =$(this).attr("id");
+    var id_array = id.split("_");
+    var exchange_name = id_array[0];
+    var coin_name = id_array[1];
+    setCoinRateChart(exchange_name, coin_name, term);
+});
+
+function setCoinRateChart(exchange_name, coin_name, term) {
+    var url = term == 'hourly' ? "/api/hourly_rate/" : "/api/daily_rate/";
     $.ajax({
         type: "GET",
-        url: "/api/coin_rate_history/" + exchange_name + "/" + coin_name,
+        url: url + exchange_name + "/" + coin_name,
         dataType: "json"
     }).done(function (data, textStatus, jqXHR) { //成功した場合
         var histories = data;
