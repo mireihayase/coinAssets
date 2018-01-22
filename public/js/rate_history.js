@@ -11,6 +11,7 @@ $('.coin_rate').click(function() {
 });
 
 $(".term").click(function() {
+    $('#chart-area').remove();
     var id = $('#set_terms').attr('class');
     var term =$(this).attr("id");
     var id_array = id.split("_");
