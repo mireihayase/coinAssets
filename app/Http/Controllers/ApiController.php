@@ -46,6 +46,7 @@ class ApiController extends Controller{
 		$coin_ratio += (array)config('CoincheckCoins');
 		$coin_ratio += (array)config('ZaifCoins');
 		$coin_ratio['JPY'] = 0;
+		$coin_ratio['others'] = 0;
 		foreach ($coin_ratio as $coin_name => $v) {
 			$coin_ratio[$coin_name] = 0;
 		}
@@ -54,7 +55,13 @@ class ApiController extends Controller{
 			if(!empty($coin_info['coin'])) {
 				foreach ($coin_info['coin'] as $coin) {
 					$ratio = num2per($coin['convert_JPY'], $total_amount);
-					$coin_ratio[$coin['coin_name']] += $ratio;
+
+					//5%以下のコインはothersにまとめる
+					if($ratio < 5){
+						$coin_ratio['others'] += $ratio;
+					}else{
+						$coin_ratio[$coin['coin_name']] += $ratio;
+					}
 				}
 			}
 		}
@@ -62,11 +69,7 @@ class ApiController extends Controller{
 		//所有割合が上位5つのコインのみ表示
 		arsort($coin_ratio);
 		$coin_ratio = array_slice($coin_ratio, 0, 5);
-		$sum = array_sum($coin_ratio);
-		if($sum < 100 || count($coin_ratio) < 5) {
-			$others = 100 - $sum;
-			$coin_ratio['others'] = $others;
-		}
+		$coin_ratio = array_filter($coin_ratio);
 
 		return json_encode($coin_ratio);
 	}

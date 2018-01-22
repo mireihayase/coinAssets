@@ -3,6 +3,8 @@
 
 @include('include/head')
 <script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 
 {{--<script src="../js/coin_rate_chart.js"></script>--}}
@@ -19,7 +21,7 @@
         <dl class="panel"><dt class="summary__head"><i class="fa fa-user"></i><span>総資産</span></dt>
             <dd class="summary__body"><span class="summary__num">{{number_format($total_amount)}} 円</span>
                 <div id="canvas-holder" style="width:100%">
-                    <canvas id="chart-area" />
+                    <canvas id="chart-area" style="width:100%"/>
                 </div>
             </dd>
         </dl>
