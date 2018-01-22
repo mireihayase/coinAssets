@@ -1,6 +1,9 @@
 $('.coin_rate').click(function() {
+    $('#chart-area').remove();
     var id = $(this).attr("id");
+    $('#set_terms').removeClass();
     $('#set_terms').addClass(id);
+    $('#termsss').text(id);
     var id_array = id.split("_");
     var exchange_name = id_array[0];
     var coin_name = id_array[1];
@@ -23,6 +26,7 @@ function setCoinRateChart(exchange_name, coin_name, term) {
         url: url + exchange_name + "/" + coin_name,
         dataType: "json"
     }).done(function (data, textStatus, jqXHR) { //成功した場合
+        $('#canvas-holder').append('<canvas id="chart-area" style="width:100%"/>');
         var histories = data;
         var date_array = [];
         var rate_array = [];
@@ -37,7 +41,8 @@ function setCoinRateChart(exchange_name, coin_name, term) {
     });
 }
 
-
+//version 2.7.1
+/*
 function setPieChart(date_array, rate_array) {
     var ctx = document.getElementById("chart-area");
     var myLineChart = new Chart(ctx, {
@@ -71,5 +76,30 @@ function setPieChart(date_array, rate_array) {
                 }]
             }
         }
+    });
+}
+*/
+
+// version 1.0.2
+function setPieChart(date_array, rate_array) {
+    var barChartData = {
+        labels : date_array,
+        datasets : [
+            {
+                fillColor : window.chartColors.red, //"rgba(127,194,239,0.7)",
+                strokeColor : window.chartColors.red,//"rgba(127,194,239,0.7)",
+                highlightFill : "rgba(165,209,244,0.7)",
+                highlightStroke : "rgba(165,209,244,0.7)",
+                data : rate_array
+            }
+        ]
+    }
+
+    var ctx = document.getElementById("chart-area").getContext("2d");
+    window.myBar = new Chart(ctx).Line(barChartData, {
+        tooltipTemplate: "<%=value%>",
+        responsive: true,
+        // アニメーションを停止させる場合は下記を追加
+        //animation : false
     });
 }

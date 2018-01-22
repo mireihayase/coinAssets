@@ -2,9 +2,10 @@
 <html>
 
   @include('include/head')
-  <script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>
-  <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
+  {{--<script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>--}}
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+  <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
   <style>
 
     .table-header-fixed {
@@ -94,14 +95,15 @@
               </tbody>
             </table>
             <br />
-            <dd class="summary__body">
+            <dd class="summary__body" style="min-height: 200px;">
+              <div class="term" id="termsss" style="border-radius: 3px;" ></div>
               <div style="float: right;">
                 <button class="term" id="hourly" style="border-radius: 3px;" >hourly</button>
                 <button class="term" id="daily" style="border-radius: 3px;">daily</button>
               </div>
               <div style="display: none" class="" id="set_terms"></div>
               <div id="canvas-holder" style="width:100%">
-                <canvas id="chart-area" />
+                <canvas id="chart-area" style="width:100%"/>
               </div>
             </dd>
           </dl>
