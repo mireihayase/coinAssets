@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\DailyAssetHistory;
 use App\DailyRateHistory;
 use App\HourlyRateHistory;
+use App\CurrentTotalAmount;
 
 class ApiController extends Controller{
 
@@ -27,18 +28,17 @@ class ApiController extends Controller{
 	}
 
 	public function coinRatio(){
-		$total_amount = 0;
+		$current_total_amount_model = new CurrentTotalAmount;
+		$current_amount = $current_total_amount_model::where('user_id', Auth::id())->first();
+		$total_amount = $current_amount->amount;
 		$bitflyerController = new BitflyerController;
 		$bitflyer_assets = $bitflyerController->setAssetParams();
-		$total_amount += $bitflyer_assets['total'];
 		$asset_params['bitflyer'] = $bitflyer_assets;
 		$coincheckController = new CoincheckController;
 		$coincheck_assets = $coincheckController->setAssetParams();
-		$total_amount += $coincheck_assets['total'];
 		$asset_params['coincheck'] = $coincheck_assets;
 		$zaifController = new ZaifController;
 		$zaif_assets = $zaifController->setAssetParams();
-		$total_amount += $zaif_assets['total'];
 		$asset_params['zaif'] = $zaif_assets;
 
 		$coin_ratio = [];
@@ -104,18 +104,17 @@ class ApiController extends Controller{
 
 	//amount + ratio
 	public function coinAsset(){
-		$total_amount = 0;
+		$current_total_amount_model = new CurrentTotalAmount;
+		$current_amount = $current_total_amount_model::where('user_id', Auth::id())->first();
+		$total_amount = $current_amount->amount;
 		$bitflyerController = new BitflyerController;
 		$bitflyer_assets = $bitflyerController->setAssetParams();
-		$total_amount += $bitflyer_assets['total'];
 		$asset_params['bitflyer'] = $bitflyer_assets;
 		$coincheckController = new CoincheckController;
 		$coincheck_assets = $coincheckController->setAssetParams();
-		$total_amount += $coincheck_assets['total'];
 		$asset_params['coincheck'] = $coincheck_assets;
 		$zaifController = new ZaifController;
 		$zaif_assets = $zaifController->setAssetParams();
-		$total_amount += $zaif_assets['total'];
 		$asset_params['zaif'] = $zaif_assets;
 
 		$coin_list = [];
