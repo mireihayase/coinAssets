@@ -206,7 +206,7 @@ class ShowController extends Controller{
 		$api = $api_model::where('user_id', $user_id)->where('exchange_id', $exchange_id)->first();
 		$this->data['exchange_id'] = $exchange_id;
 		$this->data['api_key'] = !empty($api->api_key) ? $api->api_key : '';
-		$this->data['api_secret'] = !empty($api->api_secret)? $api->api_secret : '';
+		$this->data['api_secret'] = !empty($api->api_secret)? decrypt($api->api_secret) : '';
 
 		return view('regist_api', $this->data);
 	}
@@ -227,7 +227,7 @@ class ShowController extends Controller{
 		$api_model->save();
 
 		$this->data['api_key'] = $api_model->api_key;
-		$this->data['api_secret'] = $api_model->api_secret;
+		$this->data['api_secret'] = decrypt($api_model->api_secret);
 		$this->data['exchange_id'] = $api_model->exchange_id;
 		$this->data['message'] = 'APIの登録が完了しました。';
 
