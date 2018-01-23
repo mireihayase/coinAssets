@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
 		'App\Console\Commands\InsertMonthlyAssetHistory',
 		'App\Console\Commands\InsertHourlyRate',
 		'App\Console\Commands\InsertDailyRate',
+		'App\Console\Commands\InsertCurrentTotalAmount'
     ];
 
     /**
@@ -28,10 +29,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('getCoinRate')
+	 	$schedule->command('getCoinRate')
 			 ->everyMinute()
 			 ->withoutOverlapping()
 			 ->evenInMaintenanceMode();
+		$schedule->command('InsertCurrentTotalAmount')
+			->everyFiveMinutes()
+			->withoutOverlapping()
+			->evenInMaintenanceMode();
 		$schedule->command('InsertDailyAssetHistory')
 			->daily();
 		$schedule->command('InsertMonthlyAssetHistory')
