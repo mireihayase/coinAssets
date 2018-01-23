@@ -36,42 +36,45 @@
 
 
         <p class="weight--bold">保有資産</p>
-        <table class="table table--striped">
-          <thead>
-            <tr>
-              <th>銘柄</th>
-              <th>保有数</th>
-              <th>JPY換算</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach($all_assets as $exchange => $assets)
-              <tr style="background-color: gray; color:white;"><td>{{$exchange}}</td><td></td><td>{{number_format($assets['total'])}}</td></tr>
-              @if(!empty($assets['coin']))
-                @foreach($assets['coin'] as $v)
+        @if(empty($all_assets))
+          API連携なし
+        @else
+          <table class="table table--striped">
+            <thead>
+              <tr>
+                <th>銘柄</th>
+                <th>保有数</th>
+                <th>JPY換算</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($all_assets as $exchange => $assets)
+                <tr style="background-color: gray; color:white;"><td>{{$exchange}}</td><td></td><td>{{number_format($assets['total'])}}</td></tr>
+                @if(!empty($assets['coin']))
+                  @foreach($assets['coin'] as $v)
+                    <tr>
+                      <td>{{$v['coin_name']}}</td>
+                      <td>{{number_format($v['amount'], 2)}}</td>
+                      <td>
+                        @if(!empty($v['convert_JPY']))
+                          {{number_format($v['convert_JPY'], 2)}}
+                        @else
+                          0
+                        @endif
+                      </td>
+                    </tr>
+                  @endforeach
+                @else
                   <tr>
-                    <td>{{$v['coin_name']}}</td>
-                    <td>{{number_format($v['amount'], 2)}}</td>
-                    <td>
-                      @if(!empty($v['convert_JPY']))
-                        {{number_format($v['convert_JPY'], 2)}}
-                      @else
-                        0
-                      @endif
-                    </td>
+                    <td>所有コインなし</td>
+                    <td></td>
+                    <td></td>
                   </tr>
-                @endforeach
-              @else
-                <tr>
-                  <td>所有コインなし</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              @endif
-            @endforeach
-
-          </tbody>
-        </table>
+                @endif
+              @endforeach
+            </tbody>
+          </table>
+        @endif
         </div>
       </div>
     <script src="./bower_components/jquery/dist/jquery.min.js"></script>

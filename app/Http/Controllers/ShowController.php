@@ -34,21 +34,36 @@ class ShowController extends Controller{
 		return $controller;
 	}
 
-	public function totalAsset(){
-		$current_total_amount_model = new CurrentTotalAmount;
-		$current_amount = $current_total_amount_model::where('user_id', Auth::id())->first();
-		$total_amount = $current_amount->amount;
+	public function totalAsset() {
+		//api 未登録時
+		$exchange_api_models = new ExchangeApi;
+		$exchange_apis = $exchange_api_models::where('user_id', Auth::id())->get();
+		if($exchange_apis->isEmpty()) {
+			$this->data['total_amount'] = 0;
+			$this->data['daily_gain'] = 0;
+			return view('total_asset', $this->data);
+		}
+
 		$bitflyerController = new BitflyerController;
 		$bitflyer_assets = $bitflyerController->setAssetParams();
 		$asset_params['bitflyer'] = $bitflyer_assets;
-
 		$coincheckController = new CoincheckController;
 		$coincheck_assets = $coincheckController->setAssetParams();
 		$asset_params['coincheck'] = $coincheck_assets;
-
 		$zaifController = new ZaifController;
 		$zaif_assets = $zaifController->setAssetParams();
 		$asset_params['zaif'] = $zaif_assets;
+
+		$current_total_amount_model = new CurrentTotalAmount;
+		$current_amount = $current_total_amount_model::where('user_id', Auth::id())->first();
+		if(!empty($current_amount)) {
+			$total_amount = $current_amount->amount;
+		}else {
+			$total_amount = $bitflyer_assets['total'] + $coincheck_assets['total'] + $zaif_assets['total'];
+			$current_total_amount_model->amount = $total_amount;
+			$current_total_amount_model->user_id = Auth::id();
+			$current_total_amount_model->save();
+		}
 
 		$yesterday_amount = DailyAssetHistory::where('user_id', Auth::id())->whereDate('date',  date('Y-m-d', strtotime('-2 day', time())))->first();
 		$daily_gain = !empty($yesterday_amount) ? $total_amount - $yesterday_amount->amount : 0;
@@ -63,9 +78,6 @@ class ShowController extends Controller{
 	//todo APIで共通化する
 	// /coin_ratio
 	public function coinRatio(){
-		$current_total_amount_model = new CurrentTotalAmount;
-		$current_amount = $current_total_amount_model::where('user_id', Auth::id())->first();
-		$total_amount = $current_amount->amount;
 		$bitflyerController = new BitflyerController;
 		$bitflyer_assets = $bitflyerController->setAssetParams();
 		$asset_params['bitflyer'] = $bitflyer_assets;
@@ -75,6 +87,17 @@ class ShowController extends Controller{
 		$zaifController = new ZaifController;
 		$zaif_assets = $zaifController->setAssetParams();
 		$asset_params['zaif'] = $zaif_assets;
+
+		$current_total_amount_model = new CurrentTotalAmount;
+		$current_amount = $current_total_amount_model::where('user_id', Auth::id())->first();
+		if(!empty($current_amount)) {
+			$total_amount = $current_amount->amount;
+		}else {
+			$total_amount = $bitflyer_assets['total'] + $coincheck_assets['total'] + $zaif_assets['total'];
+			$current_total_amount_model->amount = $total_amount;
+			$current_total_amount_model->user_id = Auth::id();
+			$current_total_amount_model->save();
+		}
 
 		$coin_amount = [];
 		$coin_amount += (array)config('BitflyerCoins');
