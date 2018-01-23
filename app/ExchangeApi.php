@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Api extends Model{
+class ExchangeApi extends Model{
 
 	use SoftDeletes;
 

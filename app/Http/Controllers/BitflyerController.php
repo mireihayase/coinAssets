@@ -6,7 +6,7 @@ use App\Providers\AuthServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Api;
+use App\ExchangeApi;
 use Illuminate\Support\Facades\Redis;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -29,7 +29,7 @@ class BitflyerController extends Controller{
 		$exchange_id = config('exchanges.bitflyer');
 		$this->data['exchange_id'] = $exchange_id;
 		$user_id = empty($user_id) ? Auth::id() : $user_id;
-		$api_model = new Api;
+		$api_model = new ExchangeApi;
 		$api = $api_model::where('user_id', $user_id)->where('exchange_id', $exchange_id)->first();
 		$this->api_key = !empty($api) ? $api->api_key : '';
 		$this->api_secret = !empty($api) ? decrypt($api->api_secret) : '';
@@ -63,7 +63,7 @@ class BitflyerController extends Controller{
 	}
 
 	public function registApi(Request $request){
-		$api_model = new Api;
+		$api_model = new ExchangeApi;
 		$user_id = Auth::id();
 		$exchange_id = config('exchanges.bitflyer');
 		$api = $api_model::where('user_id', $user_id)->where('exchange_id', $exchange_id)->first();

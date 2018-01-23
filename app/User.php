@@ -14,7 +14,7 @@ class User extends Authenticatable{
 	protected $dates = ['deleted_at'];
 
     public function api(){
-    	return $this->hasMany('App\Api');
+    	return $this->hasMany('App\ExchangeApi');
 	}
     /**
      * The attributes that are mass assignable.

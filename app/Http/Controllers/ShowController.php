@@ -9,7 +9,7 @@ use App\Http\Controllers\BitflyerController;
 use App\Http\Controllers\CoincheckController;
 use App\Http\Controllers\ZaifController;
 use Illuminate\Support\Facades\Redis;
-use App\Api;
+use App\ExchangeApi;
 use App\DailyAssetHistory;
 use App\DailyRateHistory;
 use App\CurrentTotalAmount;
@@ -176,7 +176,7 @@ class ShowController extends Controller{
 	public function createApi($exchange){
 		$exchange_id = config('exchanges')[$exchange];
 		$user_id = Auth::id();
-		$api_model = new Api;
+		$api_model = new ExchangeApi;
 		$api = $api_model::where('user_id', $user_id)->where('exchange_id', $exchange_id)->first();
 		$this->data['exchange_id'] = $exchange_id;
 		$this->data['api_key'] = !empty($api->api_key) ? $api->api_key : '';
@@ -186,7 +186,7 @@ class ShowController extends Controller{
 	}
 
 	public function registApi($exchange, Request $request){
-		$api_model = new Api;
+		$api_model = new ExchangeApi;
 		$user_id = Auth::id();
 		$exchange_id = config('exchanges')[$exchange];
 		$api = $api_model::where('user_id', $user_id)->where('exchange_id', $exchange_id)->first();
