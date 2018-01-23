@@ -8,6 +8,7 @@ use App\Http\Controllers\BitflyerController;
 use App\Http\Controllers\CoincheckController;
 use App\Http\Controllers\ZaifController;
 use App\MonthlyAssetHistory;
+use App\CurrentTotalAmount;
 use App\User;
 
 class InsertMonthlyAssetHistory extends Command {
@@ -40,19 +41,13 @@ class InsertMonthlyAssetHistory extends Command {
      * @return mixed
      */
     public function handle() {
-		$bitflyerController = new BitflyerController;
-		$coincheckController = new CoincheckController;
-		$zaifController = new ZaifController;
-
-		$total_amount = 0;
 		$users = User::get();
 		foreach($users as $user) {
-			$asset_history_model = new MonthlyAssetHistory;
+			$current_total_amount_model = new CurrentTotalAmount;
 			$user_id = $user->id;
-			$bitflyer_assets = $bitflyerController->setAssetParams($user_id);
-			$coincheck_assets = $coincheckController->setAssetParams($user_id);
-			$zaif_assets = $zaifController->setAssetParams($user_id);
-			$total_amount = $bitflyer_assets['total'] + $coincheck_assets['total'] + $zaif_assets['total'];
+			$current_amount = $current_total_amount_model::where('user_id', $user_id)->first();
+			$asset_history_model = new MonthlyAssetHistory;
+			$total_amount = $current_amount->amount;
 			$asset_history_model->user_id = $user_id;
 			$asset_history_model->amount = round($total_amount);
 			$asset_history_model->date =  date('Y-m-1');
