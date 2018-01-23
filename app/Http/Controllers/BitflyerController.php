@@ -201,14 +201,13 @@ class BitflyerController extends Controller{
 
 	//資産残高を取得
 	public function getBalance($user_id = null){
+		$path = '/v1/me/getbalance';
+		$url = self::API_URL . $path;
+		self::setParameter($user_id);
 		//api 未登録時
 		if(empty($this->api_key) || empty($this->api_secret)) {
 			return;
 		}
-
-		$path = '/v1/me/getbalance';
-		$url = self::API_URL . $path;
-		self::setParameter($user_id);
 		$header = self::generateHeader($path);
 		$response = self::curlExec($url, $header);
 

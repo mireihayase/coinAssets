@@ -163,14 +163,15 @@ class CoincheckController extends Controller{
 
 	//残高取得
 	public function getBalance($user_id = null){
+		$path = '/api/accounts/balance';
+		$url = self::API_URL . $path;
+		self::setParameter($user_id);
 		//api 未登録時
 		if(empty($this->api_key) || empty($this->api_secret)) {
 			return;
 		}
 
-		$path = '/api/accounts/balance';
-		$url = self::API_URL . $path;
-		self::setParameter($user_id);
+
 		$header = self::generateHeader($path);
 		$response = self::curlExec($url, $header);
 		if(empty($response['success']) || !$response['success']) {

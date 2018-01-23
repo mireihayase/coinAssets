@@ -92,15 +92,15 @@ class ZaifController extends Controller{
 
 	//残高取得
 	public function getInfo($user_id = null){
+		$nonce = time();
+		$path = 'get_info';
+		$postdata = array( "nonce" => $nonce, "method" => $path );
+		self::setParameter($user_id);
 		//api 未登録時
 		if(empty($this->api_key) || empty($this->api_secret)) {
 			return;
 		}
 
-		$nonce = time();
-		$path = 'get_info';
-		$postdata = array( "nonce" => $nonce, "method" => $path );
-		self::setParameter($user_id);
 		if( !empty( $prms ) ) {
 			$postdata = array_merge( $postdata, $prms );
 		}
