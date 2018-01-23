@@ -165,6 +165,13 @@ class ApiController extends Controller{
 			$asset_histories_array[$date] = $v;
 		}
 
+		if($daily_asset_histories_array->isEmpty()) {
+			$date = date('n/j', time());
+			$current_total_amount_model = new CurrentTotalAmount;
+			$current_amount = $current_total_amount_model::where('user_id', Auth::id())->first();
+			$asset_histories_array[$date] = $current_amount->amount;
+		}
+
 		return $asset_histories_array;
 	}
 
