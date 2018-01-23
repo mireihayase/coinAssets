@@ -163,6 +163,11 @@ class CoincheckController extends Controller{
 
 	//残高取得
 	public function getBalance($user_id = null){
+		//api 未登録時
+//		if(empty($this->api_key) || empty($this->api_secret)) {
+//			return;
+//		}
+
 		$path = '/api/accounts/balance';
 		$url = self::API_URL . $path;
 		self::setParameter($user_id);
@@ -186,7 +191,7 @@ class CoincheckController extends Controller{
 		$asset_data = [];
 		$coin_asset = [];
 		$total = 0;
-		if($response['success'] == true) {
+		if(!empty($response) && $response['success'] == true) {
 			foreach ($coincheck_coins as $coin_name => $coin_pair) {
 				$coin_asset['coin_name'] = $coin_name;
 				$coin_name_lower = mb_strtolower($coin_name);

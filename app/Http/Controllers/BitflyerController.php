@@ -201,6 +201,11 @@ class BitflyerController extends Controller{
 
 	//資産残高を取得
 	public function getBalance($user_id = null){
+		//api 未登録時
+		if(empty($this->api_key) || empty($this->api_secret)) {
+			return;
+		}
+
 		$path = '/v1/me/getbalance';
 		$url = self::API_URL . $path;
 		self::setParameter($user_id);
@@ -295,7 +300,7 @@ class BitflyerController extends Controller{
 		$coin_asset = [];
 		$total = 0;
 
-		if(empty($response['error_message'])) {
+		if(!empty($response) && empty($response['error_message'])) {
 			foreach ($response as $v) {
 				$coin_name = $v['currency_code'];
 				$coin_asset['coin_name'] = $coin_name;

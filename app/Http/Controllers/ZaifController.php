@@ -92,6 +92,11 @@ class ZaifController extends Controller{
 
 	//残高取得
 	public function getInfo($user_id = null){
+		//api 未登録時
+		if(empty($this->api_key) || empty($this->api_secret)) {
+			return;
+		}
+
 		$nonce = time();
 		$path = 'get_info';
 		$postdata = array( "nonce" => $nonce, "method" => $path );
@@ -121,7 +126,7 @@ class ZaifController extends Controller{
 		$asset_data = [];
 		$coin_asset = [];
 		$total = 0;
-		if($response['success'] == 1) {
+		if( !empty($response) && $response['success'] == 1) {
 			$ammount_array = $response['return']['funds'];
 			foreach ($ammount_array as $coin_name => $amount) {
 				$coin_name_upper = strtoupper($coin_name);
