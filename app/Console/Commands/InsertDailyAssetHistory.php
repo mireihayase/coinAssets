@@ -50,7 +50,7 @@ class InsertDailyAssetHistory extends Command {
 			$total_amount = $current_amount->amount;
 			$asset_history_model->user_id = $user_id;
 			$asset_history_model->amount = round($total_amount);
-			$asset_history_model->date =  date('Y-m-d', strtotime('-2 day', time()));
+			$asset_history_model->date =  date('Y-m-d', strtotime('-1 day', time()));
 			$asset_history_model->save();
 		}
     }
