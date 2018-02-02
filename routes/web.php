@@ -13,16 +13,6 @@
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/rate_list', 'HomeController@rateList');
-
-//display template
-Route::get('/archive', 'indexController@archive');
-Route::get('/index', 'indexController@index');
-Route::get('/dashboard', 'indexController@dashboard');
-Route::get('/detail', 'indexController@detail');
-
-
 Route::group(['middleware' => ['auth']], function () {
 
 	Route::group(['prefix' => 'bitflyer'], function () {
@@ -34,13 +24,18 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/getcoinouts', 'BitflyerController@getCoinOuts');
 		Route::get('/getchildorders', 'BitflyerController@getHistory');
 
+		Route::get('/getticker', 'BitflyerController@getticker');
+
 		Route::get('/getdeposits', 'BitflyerController@getDeposits');
 		Route::get('/getwithdrawals', 'BitflyerController@getWithDraw');
 
 		Route::get('/cumulativeProfit', 'BitflyerController@cumulativeProfit');
 
+		Route::get('/storeCoinRate', 'BitflyerController@storeCoinRate');
+
 		Route::get('/order', 'BitflyerController@order');
 
+		Route::get('/setAssetParams', 'BitflyerController@setAssetParams');
 
 		//表示
 		Route::get('/history', 'BitflyerController@dispHistory');
@@ -48,12 +43,17 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::group(['prefix' => 'coincheck'], function () {
 		Route::get('/board', 'CoincheckController@getBoard');
+
+		Route::get('/getrate', 'CoincheckController@getRate');
+		Route::get('/storeCoinRate', 'CoincheckController@storeCoinRate');
+
 		Route::get('/getdeposits', 'CoincheckController@getDeposits');
+
 		Route::get('/getbalance', 'CoincheckController@getBalance');
 		Route::get('/transactions', 'CoincheckController@getTransaction');
 
 		Route::get('/leverage_positions', 'CoincheckController@getLeveragePositions');
-
+		Route::get('/setAssetParams', 'CoincheckController@setAssetParams');
 		Route::get('/order', 'CoincheckController@order');
 
 		//表示
@@ -64,8 +64,10 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/get_info', 'ZaifController@getInfo');
 		Route::get('/trade_history', 'ZaifController@tradeHistory');
 
-		Route::get('/order', 'ZaifController@order');
+		Route::get('/getrate', 'ZaifController@getRate');
 
+		Route::get('/order', 'ZaifController@order');
+		Route::get('/setAssetParams', 'ZaifController@setAssetParams');
 		//表示
 		Route::get('/history', 'ZaifController@dispHistory');
 	});
