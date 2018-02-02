@@ -159,6 +159,32 @@ class BitflyerController extends Controller{
 		return $cumulative_profit;
 	}
 
+	public function getPrice($coin_name) {
+		$btc_str = self::getticker('BTC_JPY');
+		$btc_class = json_decode($btc_str);
+		$btc_rate = $btc_class->best_bid;
+		switch ($coin_name) {
+			case 'BTC' :
+				$price = $btc_rate;
+				break;
+			case 'ETH' :
+			case 'BCH' :
+				$coin_pair = config('BitflyerCoins.' . $coin_name);
+				$coin_class = json_decode($coin_pair);
+				$coin_btc = $coin_class->best_bid;
+				$price = $coin_btc * $btc_rate;
+				break;
+			case 'LTC' :
+			case 'MONA' :
+				$coin_pair = config('CoincheckCoins.' . $coin_name);
+				$coincheckController = new CoincheckController;
+				$price = $coincheckController->getRate($coin_pair);
+				break;
+		}
+
+		return $price;
+	}
+
 	//redisに保存
 	public static function storeCoinRate(){
 		$btc_str = self::getticker('BTC_JPY');
